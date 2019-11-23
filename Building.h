@@ -5,8 +5,7 @@
 
 class Building : public GameObject {
  private:
-  unsigned int pokemon_count = 0; // Number of Pokemon currently in this Building.
-
+  unsigned int pokemon_count = 0;  // Number of Pokemon currently in this Building.
  public:
   Building();
   Building(char in_code, int in_id, Point2D in_loc);
