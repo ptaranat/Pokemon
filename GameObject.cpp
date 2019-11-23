@@ -13,15 +13,9 @@ GameObject::GameObject(Point2D in_loc, int in_id, char in_code) {
   state = 0;
   std::cout << "GameObject constructed.\n";
 }
-Point2D GameObject::GetLocation() {
-  return location;
-}
-int GameObject::GetId() {
-  return id_num;
-}
-char GameObject::GetState() {
-  return state;
-}
+Point2D GameObject::GetLocation() { return location; }
+int GameObject::GetId() { return id_num; }
+char GameObject::GetState() { return state; }
 void GameObject::ShowStatus() {
   std::cout << display_code << id_num << "at " << location;
 }
