@@ -91,7 +91,7 @@ void PokemonCenter::ShowStatus() {
   std::cout << "Pokemon Center Status: ";
   Building::ShowStatus();
   std::cout << "Pokemon dollars per stamina point: "
-            << GetDollarCost(1) << '\n'
+            << dollar_cost_per_stamina_point << '\n'
             << "has " << GetNumStaminaPointsRemaining()
             << " stamina point(s) remaining.\n";
 }
