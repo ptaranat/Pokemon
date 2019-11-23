@@ -22,6 +22,7 @@ PokemonCenter::PokemonCenter(int in_id, double stamina_cost,
   location = in_loc;
   dollar_cost_per_stamina_point = stamina_cost;
   stamina_capacity = stamina_cap;
+  num_stamina_points_remaining = stamina_capacity;
   display_code = 'C';
   state = STAMINA_POINTS_AVAILABLE;
   std::cout << "PokemonCenter constructed.\n";
