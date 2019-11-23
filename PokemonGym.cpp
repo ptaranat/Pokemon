@@ -92,5 +92,5 @@ void PokemonGym::ShowStatus() {
   << "Stamina cost per training unit: " << stamina_cost_per_training_unit << '\n'
   << "Pokemon dollar per training unit: " << dollar_cost_per_training_unit << '\n'
   << "Experience point per training unit: " << experience_points_per_training_unit << '\n'
-  << GetNumTrainingUnitsRemaining() << " training unit(s) are remaining in this gym.\n";
+  << num_training_units_remaining << " training unit(s) are remaining in this gym.\n";
 }
