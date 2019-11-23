@@ -1,8 +1,8 @@
 #include "Vector2D.h"
 
 Vector2D::Vector2D() {
-  x = 0;
-  y = 0;
+  x = 0.0;
+  y = 0.0;
 }
 Vector2D::Vector2D(double in_x, double in_y) {
   x = in_x;

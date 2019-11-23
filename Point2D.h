@@ -7,9 +7,9 @@
 
 class Point2D {
  public:
-  double x, y;
-  Point2D();
-  Point2D(double in_x, double in_y);
+  double x, y;  // (x, y) values of the point.
+  Point2D();    // Default constructor initializes x, y to 0.0.
+  Point2D(double in_x, double in_y);  // Sets x and y to in_x and in_y.
 };
 
 double GetDistanceBetween(const Point2D p1, const Point2D p2);

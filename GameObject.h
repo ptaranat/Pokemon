@@ -5,10 +5,10 @@
 
 class GameObject {
  protected:
-  Point2D location;
-  int id_num;
-  char display_code;
-  char state;
+  Point2D location;   // The location of the object.
+  int id_num;         // This object's ID.
+  char display_code;  // How the object is represented in the View.
+  char state;  // State of the object; more information in each derived class.
 
  public:
   GameObject(char in_code);
