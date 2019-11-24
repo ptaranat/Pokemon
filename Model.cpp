@@ -65,20 +65,22 @@ bool Model::Update() {
   }
   int total_gyms = 0;
   for (int i = 0; i < num_gyms; ++i) {
-    if (total_gyms == num_gyms) {
-      std::cout << "GAME OVER: You win! All Pokemon Gyms beaten!\n";
-      std::exit(EXIT_SUCCESS);
-    } else if (gym_ptrs[i]->IsBeaten()) {
+    if (gym_ptrs[i]->IsBeaten() == true) {
       total_gyms++;
+      if (total_gyms == num_gyms) {
+        std::cout << "GAME OVER: You win! All Pokemon Gyms beaten!\n";
+        std::exit(EXIT_SUCCESS);
+      }
     }
   }
   int tired_pokemon = 0;
   for (int i = 0; i < num_pokemon; ++i) {
-    if (tired_pokemon == num_pokemon) {
-      std::cout << "GAME OVER: You lose! All of your Pokemon are tired!\n";
-      std::exit(EXIT_SUCCESS);
-    } else if (pokemon_ptrs[i]->IsExhausted()) {
+    if (pokemon_ptrs[i]->IsExhausted() == true) {
       tired_pokemon++;
+      if (tired_pokemon == num_pokemon) {
+        std::cout << "GAME OVER: You lose! All of your Pokemon are tired!\n";
+        std::exit(EXIT_SUCCESS);
+      }
     }
   }
   return updated;

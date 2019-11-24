@@ -24,9 +24,9 @@ void Pokemon::StartMoving(Point2D dest) {
   if (dest == location) {
     std::cout << display_code << id_num << ": I'm already there. See?\n";
   }
-  if (IsExhausted()) {
-    std::cout << display_code << id_num
-              << ": I am exhuasted. I may move but you cannot see me.\n";
+  if (IsExhausted() == true) {
+    std::cout << name
+              << " is out of stamina and can't move.\n";
   } else {
     state = MOVING;
     std::cout << display_code << id_num << ": On my way.\n";
@@ -206,7 +206,7 @@ void Pokemon::ShowStatus() {
       break;
     }
     default: {
-      std::cout << "\tStamina: " << stamina << '\n'
+      std::cout << "\n\tStamina: " << stamina << '\n'
                 << "\tPokemon Dollars: " << pokemon_dollars << '\n'
                 << "\tExperience Points: " << experience_points << '\n';
       break;

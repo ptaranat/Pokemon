@@ -24,6 +24,7 @@ void View::Clear() {
   for (int i = 0; i < view_maxsize; ++i) {
     for (int j = 0; j < view_maxsize; ++j) {
       grid[i][j][0] = '.';
+      grid[i][j][1] = ' ';
     }
   }
 }
@@ -32,7 +33,13 @@ void View::Plot(GameObject *ptr) {
   int x, y;
   if (GetSubscripts(x, y, ptr->GetLocation()) == true) {
     // Empty
-      ptr->DrawSelf(grid[x][y]);
+    if (grid[y][x][0] == '.') {
+      ptr->DrawSelf(grid[y][x]);
+    }
+    else {
+      grid[y][x][0] = '*';
+      grid[y][x][1] = ' ';
+    }
       //std::cout << grid[x][y][0];
       //std::cout << grid[x][y][1];
       // Not empty
@@ -46,7 +53,7 @@ void View::Draw() {
   for (int i = size-1; i >= 0; i--) {
     for (int j = 0; j < size; j++) {
       for (int k = 0; k < 2; k++) {
-        std::cout << grid[j][i][k];
+        std::cout << grid[i][j][k];
       }
     }
     std::cout << '\n';
