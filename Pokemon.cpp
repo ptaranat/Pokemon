@@ -152,44 +152,53 @@ bool Pokemon::ShouldBeVisible() {
 }
 // Prints specific status information.
 void Pokemon::ShowStatus() {
-  std::cout << name << "status: ";
+  std::cout << name << " status: ";
   GameObject::ShowStatus();
   std::cout << ' ';
   switch (state) {
     case STOPPED: {
       std::cout << "stopped";
+      break;
     }
     case MOVING: {
       std::cout << "moving at a speed of " << speed << " to destination "
                 << destination << " at each step of " << delta << '\n';
+      break;
     }
     case MOVING_TO_CENTER: {
       std::cout << "heading to Pokemon Center " << current_center->GetId()
                 << " at a speed of " << speed << " at each step of " << delta
                 << '\n';
+      break;
     }
     case MOVING_TO_GYM: {
       std::cout << "heading to Pokemon Gym " << current_gym->GetId()
                 << " at a speed of " << speed << " at each step of " << delta
                 << '\n';
+      break;
     }
     case IN_CENTER: {
       std::cout << "inside Pokemon Center " << current_center->GetId() << '\n';
+      break;
     }
     case IN_GYM: {
       std::cout << "inside Pokemon Gym " << current_gym->GetId() << '\n';
+      break;
     }
     case TRAINING_IN_GYM: {
       std::cout << "training in Pokemon Gym " << current_gym->GetId() << '\n';
+      break;
     }
     case RECOVERING_STAMINA: {
       std::cout << "recovering stamina in Pokemon Center "
                 << current_center->GetId() << '\n';
+      break;
     }
     default: {
       std::cout << "\tStamina: " << stamina << '\n'
                 << "\tPokemon Dollars: " << pokemon_dollars << '\n'
                 << "\tExperience Points: " << experience_points << '\n';
+      break;
     }
   }
 }
