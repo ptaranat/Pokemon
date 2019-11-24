@@ -119,14 +119,17 @@ void CommandHandling (Model& model, const char command) {
       DoTrainInGymCommand(model, id, unit_amount);
       break;
     }
+    // TODO View
+    /*
     case 'v': {
-      // std::cout << "go\n";
-      // DoGoCommand();
+      std::cout << "go\n";
+      DoGoCommand();
     }
     case 'x': {
-      // std::cout << "run\n";
-      // DoRunCommand();
+      std::cout << "run\n";
+      DoRunCommand();
     }
+    */
     case 'q': {
       std::cout << "quit\n";
       return;
