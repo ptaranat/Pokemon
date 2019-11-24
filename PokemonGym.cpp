@@ -16,6 +16,7 @@ PokemonGym::PokemonGym(unsigned int max_training_units,
                        unsigned int exp_points_per_unit, int in_id,
                        Point2D in_loc) {
   id_num = in_id;
+  location = in_loc;
   max_number_of_training_units = max_training_units;
   num_training_units_remaining = max_number_of_training_units;
   stamina_cost_per_training_unit = stamina_cost;
