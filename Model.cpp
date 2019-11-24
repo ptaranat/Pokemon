@@ -83,7 +83,10 @@ bool Model::Update() {
   }
   return updated;
 }
-// TODO void Display(View& view) {}
+void Model::Display(View& view) {
+  std::cout << "Time: " << time << '\n';
+  // TODO view display
+}
 void Model::ShowStatus() {
   for (int i = 0; i < num_objects; ++i) object_ptrs[i]->ShowStatus();
 }

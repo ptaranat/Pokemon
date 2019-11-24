@@ -22,6 +22,7 @@ class GameObject {
   virtual bool Update() = 0;
   virtual void ShowStatus();
   virtual bool ShouldBeVisible() = 0;
+  void DrawSelf(char * ptr); // Added by View
 };
 
 #endif

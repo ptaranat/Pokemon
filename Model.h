@@ -4,7 +4,7 @@
 #include "Pokemon.h"
 #include "PokemonGym.h"
 #include "PokemonCenter.h"
-//#include "View.h"
+#include "View.h"
 
 class Model {
   private:
@@ -24,7 +24,7 @@ class Model {
     PokemonCenter * GetPokemonCenterPtr(int id);
     PokemonGym * GetPokemonGymPtr(int id);
     bool Update();
-    // TODO void Display(View& view);
+    void Display(View& view);
     void ShowStatus();
 };
 #endif

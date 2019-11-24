@@ -11,6 +11,6 @@ void DoTrainInGymCommand(Model & model, int pokemon_id, unsigned int training_un
 void DoRecoverInCenterCommand(Model& model, int pokemon_id, unsigned int stamina_points);
 //void DoGoCommand(Model& model, View& view);
 //void DoRunCommand(Model& model, View& view);
-void CommandHandling (Model& model, const char command);
+void CommandHandling (Model& model, View& view, const char command);
 
 #endif

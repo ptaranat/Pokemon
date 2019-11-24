@@ -59,17 +59,22 @@ void DoRecoverInCenterCommand(Model& model, int pokemon_id,
     std::cout << "Error: Please enter a valid command!\n";
   }
 }
-// TODO View
-/*
 void DoGoCommand(Model& model, View& view) {
   std::cout << "Advancing one tick.\n";
+  model.Update();
 }
 void DoRunCommand(Model& model, View& view) {
   std::cout << "Advancing one tick.\n";
+  while(true) {
+    for (int i = 0; i < 5; ++i) {
+      if (model.Update() == true) {
+        break;
+      }
+    }
+  }
 }
-*/
 
-void CommandHandling (Model& model, const char command) {
+void CommandHandling (Model& model, View& view, const char command) {
   switch(command) {
     case 'm': {
       int id;
@@ -119,17 +124,14 @@ void CommandHandling (Model& model, const char command) {
       DoTrainInGymCommand(model, id, unit_amount);
       break;
     }
-    // TODO View
-    /*
     case 'v': {
       std::cout << "go\n";
-      DoGoCommand();
+      DoGoCommand(model, view);
     }
     case 'x': {
       std::cout << "run\n";
-      DoRunCommand();
+      DoRunCommand(model, view);
     }
-    */
     case 'q': {
       std::cout << "quit\n";
       model.~Model();  // TODO Probably shouldn't do this
