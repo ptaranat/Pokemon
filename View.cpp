@@ -17,41 +17,39 @@ bool View::GetSubscripts(int &out_x, int &out_y, Point2D location) {
 View::View() {
   size = 11;
   scale = 2;
-  origin = (Point2D(0.0, 0.0));
+  origin = Point2D();
 }
 
 void View::Clear() {
   for (int i = 0; i < view_maxsize; ++i) {
     for (int j = 0; j < view_maxsize; ++j) {
-      grid[i][j][1] = '.';
+      grid[i][j][0] = '.';
     }
   }
 }
 
 void View::Plot(GameObject *ptr) {
   int x, y;
-  if (GetSubscripts(x, y, ptr->GetLocation) == true) {
+  if (GetSubscripts(x, y, ptr->GetLocation()) == true) {
     // Empty
-    if (grid[x][y][0] == '.') {
       ptr->DrawSelf(grid[x][y]);
-    } else {
+      //std::cout << grid[x][y][0];
+      //std::cout << grid[x][y][1];
       // Not empty
-      ptr->DrawSelf(grid[x][y]);
-      grid[x][y][0] = '*';
-    }
+      //ptr->DrawSelf(grid[x][y]);
+      //grid[x][y][0] = '*';
   }
 }
-
+// TODO add axes
 void View::Draw() {
   int max = view_maxsize;
-  std::cout << std::left << std::setw(2) << max << std::right
-            << std::setw(size * 2);
-  for (int i = view_maxsize - 1; i >= size; --i) {
-    for (int j = view_maxsize - 1; j >= size; --j) {
-      for (int k = 0; k < 2; ++k) {
-        std::cout << grid[i][j][k] << " ";
+  for (int i = size-1; i >= 0; i--) {
+    for (int j = 0; j < size; j++) {
+      for (int k = 0; k < 2; k++) {
+        std::cout << grid[j][i][k];
       }
     }
     std::cout << '\n';
   }
+  
 }

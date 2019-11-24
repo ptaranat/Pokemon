@@ -5,6 +5,7 @@ void DoMoveCommand(Model& model, int pokemon_id, Point2D p1) {
     Pokemon* pokemon = model.GetPokemonPtr(pokemon_id);
     pokemon->StartMoving(p1);
     std::cout << "Moving " << pokemon->GetName() << " to " << p1 << '\n';
+
   } else {
     std::cout << "Error: Please enter a valid command!\n";
   }
@@ -62,6 +63,8 @@ void DoRecoverInCenterCommand(Model& model, int pokemon_id,
 void DoGoCommand(Model& model, View& view) {
   std::cout << "Advancing one tick.\n";
   model.Update();
+  model.ShowStatus();
+  model.Display(view);
 }
 void DoRunCommand(Model& model, View& view) {
   std::cout << "Advancing one tick.\n";
@@ -72,6 +75,8 @@ void DoRunCommand(Model& model, View& view) {
       }
     }
   }
+  model.ShowStatus();
+  model.Display(view);
 }
 
 void CommandHandling (Model& model, View& view, const char command) {
@@ -142,4 +147,5 @@ void CommandHandling (Model& model, View& view, const char command) {
       break;
     }
   }
+  model.Display(view);
 }

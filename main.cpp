@@ -6,6 +6,8 @@ int main() {
   Model* m = new Model();
   View* v = new View();
   char command = ' ';
+  m->ShowStatus();
+  m->Display(*v);
   while (true) {
     std::cout << "Enter command: ";
     std::cin >> command;

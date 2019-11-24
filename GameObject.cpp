@@ -29,7 +29,7 @@ void GameObject::ShowStatus() {
 
 // Puts the display_code at character pointed to by ptr, then id_num
 void GameObject::DrawSelf(char* ptr) {
-
-  *ptr = display_code;
-  *(ptr+1) = id_num;
+  ptr[0] = display_code;
+  ptr[1] = (char)(id_num + '0'); // Needs to be ascii
+  //std::cout << ptr[0] << ptr[1];
 }
