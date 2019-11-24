@@ -253,6 +253,7 @@ bool Pokemon::Update() {
       std::cout << "\tStamina: " << stamina << '\n'
                 << "\tPokemon Dollars: " << pokemon_dollars << '\n'
                 << "\tExperience Points: " << experience_points << '\n';
+      return false;
     }
   }
 }
