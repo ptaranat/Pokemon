@@ -1,5 +1,6 @@
 #include "PokemonGym.h"
 
+// (max_training_units, stamina_cost, dollar_cost, exp_per_unit, in_id, in_loc)
 PokemonGym::PokemonGym() {
   display_code = 'G';
   state = NOT_BEATEN;
@@ -87,10 +88,14 @@ bool PokemonGym::IsBeaten() {
 void PokemonGym::ShowStatus() {
   std::cout << "Pokemon Gym Status: ";
   Building::ShowStatus();
-  std::cout 
-  << "\tMax number of training units: " << max_number_of_training_units << '\n'
-  << "\tStamina cost per training unit: " << stamina_cost_per_training_unit << '\n'
-  << "\tPokemon dollar per training unit: " << dollar_cost_per_training_unit << '\n'
-  << "\tExperience point per training unit: " << experience_points_per_training_unit << '\n'
-  << '\t' << num_training_units_remaining << " training unit(s) are remaining in this gym.\n";
+  std::cout << "\tMax number of training units: "
+            << max_number_of_training_units << '\n'
+            << "\tStamina cost per training unit: "
+            << stamina_cost_per_training_unit << '\n'
+            << "\tPokemon dollar per training unit: "
+            << dollar_cost_per_training_unit << '\n'
+            << "\tExperience point per training unit: "
+            << experience_points_per_training_unit << '\n'
+            << '\t' << num_training_units_remaining
+            << " training unit(s) are remaining in this gym.\n";
 }

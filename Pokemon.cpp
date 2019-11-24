@@ -34,6 +34,7 @@ void Pokemon::StartMoving(Point2D dest) {
 }
 // Tells the Pokemon to start moving to a PokemonCenter.
 void Pokemon::StartMovingToCenter(PokemonCenter* center) {
+  current_center = center;
   SetupDestination(center->GetLocation());
   state = MOVING_TO_CENTER;
   if (center->GetLocation() == location) {
@@ -50,6 +51,7 @@ void Pokemon::StartMovingToCenter(PokemonCenter* center) {
 }
 // Tells the Pokemon to start moving to a PokemonGym.
 void Pokemon::StartMovingToGym(PokemonGym* gym) {
+  current_gym = gym;
   SetupDestination(gym->GetLocation());
   state = MOVING_TO_GYM;
   if (gym->GetLocation() == location) {
@@ -157,7 +159,7 @@ void Pokemon::ShowStatus() {
   std::cout << ' ';
   switch (state) {
     case STOPPED: {
-      std::cout << "stopped";
+      std::cout << "stopped\n";
       break;
     }
     case MOVING: {
@@ -201,6 +203,9 @@ void Pokemon::ShowStatus() {
       break;
     }
   }
+  std::cout << "\tStamina: " << stamina << '\n'
+            << "\tPokemon Dollars: " << pokemon_dollars << '\n'
+            << "\tExperience Points: " << experience_points << '\n';
 }
 // Updates depending on state.
 bool Pokemon::Update() {

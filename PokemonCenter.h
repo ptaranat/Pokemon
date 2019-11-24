@@ -24,6 +24,7 @@ class PokemonCenter : public Building {
   // - stamina_capacity = 100
   // - num_stamina_points = stamina_capacity
   // - dollar_cost_per_stamina_point = 5
+  // (int in_id, double stamina_cost, unsigned int stamina_cap, Point2D in_loc)
   PokemonCenter();
   // Initializes the member variables to these values:
   // - ID number = in_id
