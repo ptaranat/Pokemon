@@ -41,16 +41,16 @@ class Pokemon : public GameObject {
  private:
   // The speed this object travels, expressed as distance per update time unit.
   double speed;
-  bool is_in_gym;
-  bool is_in_center;
+  bool is_in_gym = false;
+  bool is_in_center = false;
   unsigned int stamina = 20;
   unsigned int experience_points = 0;
   double pokemon_dollars = 0;
   unsigned int training_units_to_buy = 0;
   unsigned int stamina_points_to_buy = 0;
   std::string name;
-  PokemonCenter* current_center;
-  PokemonGym* current_gym;
+  PokemonCenter* current_center = nullptr;
+  PokemonGym* current_gym = nullptr;
   // This object's current destination coordinates in the real plane.
   Point2D destination;
   // The x and y amounts that the object will move on each time unit.
