@@ -23,7 +23,7 @@ void Building::ShowStatus() {
   if (pokemon_count == 1) {
     std::cout << '\t' << pokemon_count << " Pokemon is in this building\n";
   } else {
-    std::cout << '\t' <<  pokemon_count << " Pokemon are in this building\n";
+    std::cout << '\t' << pokemon_count << " Pokemon are in this building\n";
   }
 }
 // Returns true because buildings are always visible
