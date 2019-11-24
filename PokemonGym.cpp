@@ -41,8 +41,8 @@ unsigned int PokemonGym::GetNumTrainingUnitsRemaining() {
 // train unit_qty training units
 bool PokemonGym::IsAbleToTrain(unsigned int unit_qty, double budget,
                                unsigned int stamina) {
-  if ((GetDollarCost(unit_qty) - budget >= 0) &&
-      (GetStaminaCost(unit_qty) - stamina >= 0)) {
+  if ((budget - GetDollarCost(unit_qty) >= 0) &&
+      (stamina - GetStaminaCost(unit_qty) >= 0)) {
     return true;
   } else {
     return false;

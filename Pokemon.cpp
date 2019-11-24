@@ -74,11 +74,12 @@ unsigned int Minimum(unsigned int x, unsigned int y) {
 // Tells the Pokemon to start training (num_training_units) in a PokemonGym.
 void Pokemon::StartTraining(unsigned int num_training_units) {
   // Pokemon can train
-  if (!IsExhausted() && is_in_gym &&
+  if (IsExhausted() == false && is_in_gym &&
       current_gym->IsAbleToTrain(num_training_units, pokemon_dollars,
                                  stamina) &&
-      !(current_gym->IsBeaten())) {
+      current_gym->IsBeaten() == false) {
     state = TRAINING_IN_GYM;
+    training_units_to_buy = num_training_units;
     std::cout << display_code << id_num << ": Started to train at Pokemon Gym "
               << current_gym << " with " << num_training_units
               << " training units.\n";
@@ -89,12 +90,12 @@ void Pokemon::StartTraining(unsigned int num_training_units) {
       std::cout << display_code << id_num
                 << ": I am exhuasted so no more training for me...\n";
     }
-    if (!is_in_gym) {
+    if (is_in_gym == false) {
       std::cout << display_code << id_num
                 << ": I can only train in a Pokemon Gym!\n";
     }
-    if (!(current_gym->IsAbleToTrain(num_training_units, pokemon_dollars,
-                                     stamina))) {
+    if (current_gym->IsAbleToTrain(num_training_units, pokemon_dollars,
+                                     stamina) == false) {
       std::cout << display_code << id_num
                 << ": Not enough stamina and/or money for training.\n";
     }
@@ -111,20 +112,21 @@ void Pokemon::StartRecoveringStamina(unsigned int num_stamina_points) {
                                              pokemon_dollars) &&
       current_center->HasStaminaPoints()) {
     state = RECOVERING_STAMINA;
+    stamina_points_to_buy = num_stamina_points;
     std::cout << display_code << id_num << ": Started recovering "
               << num_stamina_points << " stamina point(s) at Pokemon Center "
               << current_center->GetId() << ".\n";
   } else {
-    if (!is_in_center) {
+    if (is_in_center == false) {
       std::cout << display_code << id_num
                 << ": I can only recover stamina at a Pokemon Center!\n";
     }
-    if (!(current_center->CanAffordStaminaPoints(num_stamina_points,
-                                                 pokemon_dollars))) {
+    if (current_center->CanAffordStaminaPoints(num_stamina_points,
+                                                 pokemon_dollars) == false) {
       std::cout << display_code << id_num
                 << ": Not enough money to recover stamina.\n";
     }
-    if (!(current_center->HasStaminaPoints())) {
+    if (current_center->HasStaminaPoints() == false) {
       std::cout << display_code << id_num
                 << ": Cannot recover! No stamina points remaining in this "
                    "Pokemon Center.\n";
@@ -228,6 +230,7 @@ bool Pokemon::Update() {
       if (destination == location) {
         current_center->AddOnePokemon();
         state = IN_CENTER;
+        is_in_center = true;
         return true;
       }
       else {
@@ -239,6 +242,7 @@ bool Pokemon::Update() {
       if (destination == location) {
         current_gym->AddOnePokemon();
         state = IN_GYM;
+        is_in_gym = true;
         return true;
       }
       else {
@@ -252,6 +256,7 @@ bool Pokemon::Update() {
       return false;
     }
     case TRAINING_IN_GYM: {
+      if (current_gym->IsAbleToTrain(training_units_to_buy, pokemon_dollars, stamina)) {
       stamina -= current_gym->GetStaminaCost(training_units_to_buy);
       pokemon_dollars -= current_gym->GetDollarCost(training_units_to_buy);
       unsigned int exp_gained =
@@ -263,8 +268,13 @@ bool Pokemon::Update() {
                 << " experienced point(s)! **\n";
       state = IN_GYM;
       return true;
+      }
+      else {
+        return false;
+      }
     }
     case RECOVERING_STAMINA: {
+      if (current_center->CanAffordStaminaPoints(stamina_points_to_buy, pokemon_dollars)) {
       unsigned int stamina_gained =
           current_center->DistributeStamina(stamina_points_to_buy);
       stamina += stamina_gained;
@@ -273,6 +283,10 @@ bool Pokemon::Update() {
                 << " stamina point(s)! **\n";
       state = IN_CENTER;
       return true;
+      }
+      else {
+        return false;
+      }
     }
     default: {
       std::cout << "\tStamina: " << stamina << '\n'
@@ -294,6 +308,8 @@ bool Pokemon::UpdateLocation() {
     return true;
   } else {
     std::cout << display_code << id_num << ": step...\n";
+    stamina -= 1;
+    pokemon_dollars += GetRandomAmountOfPokemonDollars();
     location = location + delta;
     return false;
   }

@@ -45,7 +45,7 @@ unsigned int PokemonCenter::GetNumStaminaPointsRemaining() {
 // given budget.
 bool PokemonCenter::CanAffordStaminaPoints(unsigned int stamina_points,
                                            double budget) {
-  if (GetDollarCost(stamina_points) - budget >= 0) {
+  if (budget - GetDollarCost(stamina_points) >= 0) {
     return true;
   } else {
     return false;
