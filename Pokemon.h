@@ -7,15 +7,15 @@
 
 class Pokemon : public GameObject {
   enum PokemonStates {
-    STOPPED = 0,
-    MOVING = 1,
-    EXHAUSTED = 2,
-    IN_GYM = 3,
-    IN_CENTER = 4,
-    MOVING_TO_GYM = 5,
-    MOVING_TO_CENTER = 6,
-    TRAINING_IN_GYM = 7,
-    RECOVERING_STAMINA = 8
+    STOPPED             = 0,
+    MOVING              = 1,
+    EXHAUSTED           = 2,
+    IN_GYM              = 3,
+    IN_CENTER           = 4,
+    MOVING_TO_GYM       = 5,
+    MOVING_TO_CENTER    = 6,
+    TRAINING_IN_GYM     = 7,
+    RECOVERING_STAMINA  = 8
   };
 
  public:
@@ -39,18 +39,21 @@ class Pokemon : public GameObject {
   void SetupDestination(Point2D dest);
 
  private:
+  // The speed this object travels, expressed as distance per update time unit.
   double speed;
   bool is_in_gym;
   bool is_in_center;
-  unsigned int stamina;
-  unsigned int experience_points;
-  double pokemon_dollars;
-  unsigned int training_units_to_buy;
-  unsigned int stamina_points_to_buy;
+  unsigned int stamina = 20;
+  unsigned int experience_points = 0;
+  double pokemon_dollars = 0;
+  unsigned int training_units_to_buy = 0;
+  unsigned int stamina_points_to_buy = 0;
   std::string name;
   PokemonCenter* current_center;
   PokemonGym* current_gym;
+  // This object's current destination coordinates in the real plane.
   Point2D destination;
+  // The x and y amounts that the object will move on each time unit.
   Vector2D delta;
 };
 

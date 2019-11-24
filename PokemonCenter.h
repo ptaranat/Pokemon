@@ -5,7 +5,7 @@
 
 class PokemonCenter : public Building {
   enum PokemonCenterStates {
-    STAMINA_POINTS_AVAILABLE = 0,
+    STAMINA_POINTS_AVAILABLE    = 0,
     NO_STAMINA_POINTS_AVAILABLE = 1
   };
 

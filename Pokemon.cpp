@@ -1,6 +1,7 @@
 #include "Pokemon.h"
 
 // Public
+
 Pokemon::Pokemon() : GameObject('P') {
   speed = 5;
   std::cout << "Pokemon default constructed.\n";
@@ -113,24 +114,176 @@ void Pokemon::StartRecoveringStamina(unsigned int num_stamina_points) {
               << current_center->GetId() << ".\n";
   } else {
     if (!is_in_center) {
-      std::cout << display_code << id_num << ": I can only recover stamina at a Pokemon Center!\n";
+      std::cout << display_code << id_num
+                << ": I can only recover stamina at a Pokemon Center!\n";
     }
-    if (!(current_center->CanAffordStaminaPoints(num_stamina_points, pokemon_dollars))) {
-      std::cout << display_code << id_num << ": Not enough money to recover stamina.\n";
+    if (!(current_center->CanAffordStaminaPoints(num_stamina_points,
+                                                 pokemon_dollars))) {
+      std::cout << display_code << id_num
+                << ": Not enough money to recover stamina.\n";
     }
     if (!(current_center->HasStaminaPoints())) {
-      std::cout << display_code << id_num << ": Cannot recover! No stamina points remaining in this Pokemon Center.\n";
+      std::cout << display_code << id_num
+                << ": Cannot recover! No stamina points remaining in this "
+                   "Pokemon Center.\n";
     }
   }
 }
-void Pokemon::Stop() {}
-bool Pokemon::IsExhausted() {}
-bool Pokemon::ShouldBeVisible() {}
-void Pokemon::ShowStatus() {}
-bool Pokemon::Update() {}
+// Tells this Pokemon to stop doing whatever it was doing.
+void Pokemon::Stop() {
+  state = STOPPED;
+  std::cout << display_code << id_num << ": Stopping...\n";
+}
+// Returns true if stamina is 0.
+bool Pokemon::IsExhausted() {
+  if (stamina == 0) {
+    return true;
+  } else {
+    return false;
+  }
+}
+// Returns true if this Pokemon is NOT exhuasuted.
+bool Pokemon::ShouldBeVisible() {
+  if (!IsExhausted()) {
+    return true;
+  } else {
+    return false;
+  }
+}
+// Prints specific status information.
+void Pokemon::ShowStatus() {
+  std::cout << name << "status: ";
+  GameObject::ShowStatus();
+  std::cout << ' ';
+  switch (state) {
+    case STOPPED: {
+      std::cout << "stopped";
+    }
+    case MOVING: {
+      std::cout << "moving at a speed of " << speed << " to destination "
+                << destination << " at each step of " << delta << '\n';
+    }
+    case MOVING_TO_CENTER: {
+      std::cout << "heading to Pokemon Center " << current_center->GetId()
+                << " at a speed of " << speed << " at each step of " << delta
+                << '\n';
+    }
+    case MOVING_TO_GYM: {
+      std::cout << "heading to Pokemon Gym " << current_gym->GetId()
+                << " at a speed of " << speed << " at each step of " << delta
+                << '\n';
+    }
+    case IN_CENTER: {
+      std::cout << "inside Pokemon Center " << current_center->GetId() << '\n';
+    }
+    case IN_GYM: {
+      std::cout << "inside Pokemon Gym " << current_gym->GetId() << '\n';
+    }
+    case TRAINING_IN_GYM: {
+      std::cout << "training in Pokemon Gym " << current_gym->GetId() << '\n';
+    }
+    case RECOVERING_STAMINA: {
+      std::cout << "recovering stamina in Pokemon Center "
+                << current_center->GetId() << '\n';
+    }
+    default: {
+      std::cout << "\tStamina: " << stamina << '\n'
+                << "\tPokemon Dollars: " << pokemon_dollars << '\n'
+                << "\tExperience Points: " << experience_points << '\n';
+    }
+  }
+}
+// Updates depending on state.
+bool Pokemon::Update() {
+  switch (state) {
+    case STOPPED: {
+      return false;
+    }
+    case MOVING: {
+      UpdateLocation();
+      if (destination == location) {
+        state == STOPPED;
+        return true;
+      }
+    }
+    case MOVING_TO_CENTER: {
+      UpdateLocation();
+      if (destination == location) {
+        state == IN_CENTER;
+        return true;
+      }
+    }
+    case MOVING_TO_GYM: {
+      UpdateLocation();
+      if (destination == location) {
+        state == IN_GYM;
+        return true;
+      }
+    }
+    case IN_CENTER: {
+      return false;
+    }
+    case IN_GYM: {
+      return false;
+    }
+    case TRAINING_IN_GYM: {
+      stamina -= current_gym->GetStaminaCost(training_units_to_buy);
+      pokemon_dollars -= current_gym->GetDollarCost(training_units_to_buy);
+      unsigned int exp_gained =
+          current_gym->TrainPokemon(training_units_to_buy);
+      experience_points += exp_gained;
+      std::cout << "** " << name << " completed " << training_units_to_buy
+                << " training unit(s)! **\n";
+      std::cout << "** " << name << " gained " << exp_gained
+                << " experienced point(s)! **\n";
+      state = IN_GYM;
+      return true;
+    }
+    case RECOVERING_STAMINA: {
+      unsigned int stamina_gained =
+          current_center->DistributeStamina(stamina_points_to_buy);
+      stamina += stamina_gained;
+      pokemon_dollars -= current_center->GetDollarCost(stamina_points_to_buy);
+      std::cout << "** " << name << " recovered " << stamina_gained
+                << " stamina point(s)! **\n";
+      state = IN_CENTER;
+      return true;
+    }
+    default: {
+      std::cout << "\tStamina: " << stamina << '\n'
+                << "\tPokemon Dollars: " << pokemon_dollars << '\n'
+                << "\tExperience Points: " << experience_points << '\n';
+    }
+  }
+}
 
 // Protected
-bool Pokemon::UpdateLocation() {}
-void Pokemon::SetupDestination(Point2D dest) {}
 
-double GetRandomAmountOfPokemonDollars() {}
+// Updates object's location while it is moving.
+bool Pokemon::UpdateLocation() {
+  if (std::fabs(destination.x - location.x) <= std::fabs(delta.x) &&
+      std::fabs(destination.y - location.y) <= std::fabs(delta.y)) {
+    location = destination;
+    std::cout << display_code << id_num << ": I'm there!\n";
+    return true;
+  } else {
+    std::cout << display_code << id_num << ": step...\n";
+    location = location + delta;
+    return false;
+  }
+}
+// Sets up the object to start moving to dest.
+void Pokemon::SetupDestination(Point2D dest) {
+  destination = dest;
+  delta = (destination - location) *
+          (speed / GetDistanceBetween(destination, location));
+}
+
+// Non-members
+
+// Returns a random number between 0.0 and 2.0 inclusive.
+double GetRandomAmountOfPokemonDollars() {
+  double output =
+      static_cast<double>(std::rand()) / (static_cast<double>(RAND_MAX / 2.0));
+  return output;
+}
