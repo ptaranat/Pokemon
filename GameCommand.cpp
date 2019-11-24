@@ -96,6 +96,7 @@ void CommandHandling (Model& model, View& view, const char command) {
       std::cin >> id >> gym;
       //std::cout << "moving " << id << " towards Pokemon Gym " << gym << '\n';
       DoMoveToGymCommand(model, id, gym);
+      model.Display(view);
       break;
     }
     case 'c': {
@@ -104,6 +105,7 @@ void CommandHandling (Model& model, View& view, const char command) {
       std::cin >> id >> center;
       //std::cout << "moving " << id << " towards Pokemon Center " << center << '\n';
       DoMoveToCenterCommand(model, id, center);
+      model.Display(view);
       break;
     }
     case 's': {
@@ -111,6 +113,7 @@ void CommandHandling (Model& model, View& view, const char command) {
       std::cin >> id;
       //std::cout << "Stopping " << id << '\n';
       DoStopCommand(model, id);
+      model.Display(view);
       break;
     }
     case 'r': {
@@ -119,6 +122,7 @@ void CommandHandling (Model& model, View& view, const char command) {
       std::cin >> id >> stamina_amount;
       //std::cout << id << " is recovering " << stamina_amount << '\n';
       DoRecoverInCenterCommand(model, id, stamina_amount);
+      model.Display(view);
       break;
     }
     case 't': {
@@ -127,6 +131,7 @@ void CommandHandling (Model& model, View& view, const char command) {
       std::cin >> id >> unit_amount;
       //std::cout << id << " is training " << unit_amount << '\n';
       DoTrainInGymCommand(model, id, unit_amount);
+      model.Display(view);
       break;
     }
     case 'v': {

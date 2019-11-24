@@ -25,8 +25,7 @@ void Pokemon::StartMoving(Point2D dest) {
     std::cout << display_code << id_num << ": I'm already there. See?\n";
   }
   if (IsExhausted() == true) {
-    std::cout << name
-              << " is out of stamina and can't move.\n";
+    std::cout << name << " is out of stamina and can't move.\n";
   } else {
     state = MOVING;
     std::cout << display_code << id_num << ": On my way.\n";
@@ -39,10 +38,12 @@ void Pokemon::StartMovingToCenter(PokemonCenter* center) {
   if (center->GetLocation() == location) {
     std::cout << display_code << id_num
               << ": I'm already at the Pokemon Center!\n";
+              return;
   }
   if (IsExhausted()) {
     std::cout << display_code << id_num
               << ": I am exhuasted so I can't move to recover stamina...\n";
+              return;
   } else {
     state = MOVING_TO_CENTER;
     std::cout << display_code << id_num << ": On my way to center "
@@ -56,10 +57,12 @@ void Pokemon::StartMovingToGym(PokemonGym* gym) {
   if (gym->GetLocation() == location) {
     std::cout << display_code << id_num
               << ": I'm already at the Pokemon Gym!\n";
+              return;
   }
   if (IsExhausted()) {
     std::cout << display_code << id_num
               << ": I am exhausted so I shouldn't be going to the gym...\n";
+              return;
   } else {
     state = MOVING_TO_GYM;
     std::cout << display_code << id_num << ": On my way to gym " << gym->GetId()
@@ -224,8 +227,7 @@ bool Pokemon::Update() {
     }
     case MOVING: {
       if (IsExhausted() == false) {
-        UpdateLocation();
-        if (destination == location) {
+        if (UpdateLocation()) {
           state = STOPPED;
           return true;
         } else {
@@ -245,43 +247,32 @@ bool Pokemon::Update() {
       }
     }
     case MOVING_TO_CENTER: {
-      if (IsExhausted() == false) {
-        UpdateLocation();
-        if (destination == location) {
-          current_center->AddOnePokemon();
-          state = IN_CENTER;
-          is_in_center = true;
-          return true;
-        } else {
-          if (is_in_gym == true) {
-            is_in_gym = false;
-            current_gym->RemoveOnePokemon();
-          }
-          return false;
-        }
-      } else {
-        state = EXHAUSTED;
+      if (UpdateLocation()) {
+        //std::cout << "ADD ONE";
+        current_center->AddOnePokemon();
+        state = IN_CENTER;
+        is_in_center = true;
         return true;
+      } else {
+        if (is_in_gym == true) {
+          is_in_gym = false;
+          current_gym->RemoveOnePokemon();
+        }
+        return false;
       }
     }
     case MOVING_TO_GYM: {
-      if (IsExhausted() == false) {
-        UpdateLocation();
-        if (destination == location) {
-          current_gym->AddOnePokemon();
-          state = IN_GYM;
-          is_in_gym = true;
-          return true;
-        } else {
-          if (is_in_center == true) {
-            is_in_center = false;
-            current_center->RemoveOnePokemon();
-          }
-          return false;
-        }
-      } else {
-        state = EXHAUSTED;
+      if (UpdateLocation()) {
+        current_gym->AddOnePokemon();
+        state = IN_GYM;
+        is_in_gym = true;
         return true;
+      } else {
+        if (is_in_center == true) {
+          is_in_center = false;
+          current_center->RemoveOnePokemon();
+        }
+        return false;
       }
     }
     case IN_CENTER: {
@@ -298,9 +289,11 @@ bool Pokemon::Update() {
               current_gym->GetStaminaCost(training_units_to_buy);
           if (stam_lost <= stamina) {
             stamina -= stam_lost;
-            pokemon_dollars -= current_gym->GetDollarCost(training_units_to_buy);
+            pokemon_dollars -=
+                current_gym->GetDollarCost(training_units_to_buy);
           } else {
-            pokemon_dollars -= current_gym->GetDollarCost(stamina);  // deplete stamina
+            pokemon_dollars -=
+                current_gym->GetDollarCost(stamina);  // deplete stamina
             stamina = 0;  // Trained as much as possible
           }
           unsigned int exp_gained =

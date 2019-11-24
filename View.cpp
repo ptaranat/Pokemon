@@ -35,28 +35,44 @@ void View::Plot(GameObject *ptr) {
     // Empty
     if (grid[y][x][0] == '.') {
       ptr->DrawSelf(grid[y][x]);
-    }
-    else {
+    } else {
       grid[y][x][0] = '*';
       grid[y][x][1] = ' ';
     }
-      //std::cout << grid[x][y][0];
-      //std::cout << grid[x][y][1];
-      // Not empty
-      //ptr->DrawSelf(grid[x][y]);
-      //grid[x][y][0] = '*';
+    // std::cout << grid[x][y][0];
+    // std::cout << grid[x][y][1];
+    // Not empty
+    // ptr->DrawSelf(grid[x][y]);
+    // grid[x][y][0] = '*';
   }
 }
 // TODO add axes
 void View::Draw() {
   int max = view_maxsize;
-  for (int i = size-1; i >= 0; i--) {
+  for (int i = size - 1; i >= 0; i--) {
+    if (i % int(scale) == 0) {
+      std::cout << std::left << std::setw(2) << max;
+      max -= scale*2;
+    } else {
+      std::cout << "  ";
+    }
     for (int j = 0; j < size; j++) {
       for (int k = 0; k < 2; k++) {
-        std::cout << grid[i][j][k];
+        std::cout << std::right << grid[i][j][k];
       }
     }
     std::cout << '\n';
   }
-  
+  std::cout << "  ";
+  int temp = 0;
+  for (int i = 0; temp <= view_maxsize; i++) {
+    if (i % int(scale) == 0) {
+      std::cout << std::setw(2) << temp;
+      temp += scale*2;
+    }
+    else {
+      std::cout << "  ";
+    }
+  }
+  std::cout << '\n';
 }
