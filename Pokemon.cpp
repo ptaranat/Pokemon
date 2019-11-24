@@ -59,7 +59,7 @@ void Pokemon::StartMovingToGym(PokemonGym* gym) {
   }
   if (IsExhausted()) {
     std::cout << display_code << id_num
-              << ": I am exhausted so I shouldn’t be going to the gym...\n";
+              << ": I am exhausted so I shouldn't be going to the gym...\n";
   } else {
     state = MOVING_TO_GYM;
     std::cout << display_code << id_num << ": On my way to gym " << gym->GetId()
@@ -223,50 +223,65 @@ bool Pokemon::Update() {
       return false;
     }
     case MOVING: {
-      UpdateLocation();
-      if (destination == location) {
-        state = STOPPED;
-        return true;
+      if (IsExhausted() == false) {
+        UpdateLocation();
+        if (destination == location) {
+          state = STOPPED;
+          return true;
+        } else {
+          if (is_in_gym == true) {
+            is_in_gym = false;
+            current_gym->RemoveOnePokemon();
+          }
+          if (is_in_center == true) {
+            is_in_center = false;
+            current_center->RemoveOnePokemon();
+          }
+          return false;
+        }
       } else {
-        if (is_in_gym == true) {
-          is_in_gym = false;
-          current_gym->RemoveOnePokemon();
-        }
-        if (is_in_center == true) {
-          is_in_center = false;
-          current_center->RemoveOnePokemon();
-        }
-        return false;
+        state = EXHAUSTED;
+        return true;
       }
     }
     case MOVING_TO_CENTER: {
-      UpdateLocation();
-      if (destination == location) {
-        current_center->AddOnePokemon();
-        state = IN_CENTER;
-        is_in_center = true;
-        return true;
-      } else {
-        if (is_in_gym == true) {
-          is_in_gym = false;
-          current_gym->RemoveOnePokemon();
+      if (IsExhausted() == false) {
+        UpdateLocation();
+        if (destination == location) {
+          current_center->AddOnePokemon();
+          state = IN_CENTER;
+          is_in_center = true;
+          return true;
+        } else {
+          if (is_in_gym == true) {
+            is_in_gym = false;
+            current_gym->RemoveOnePokemon();
+          }
+          return false;
         }
-        return false;
+      } else {
+        state = EXHAUSTED;
+        return true;
       }
     }
     case MOVING_TO_GYM: {
-      UpdateLocation();
-      if (destination == location) {
-        current_gym->AddOnePokemon();
-        state = IN_GYM;
-        is_in_gym = true;
-        return true;
-      } else {
-        if (is_in_center == true) {
-          is_in_center = false;
-          current_center->RemoveOnePokemon();
+      if (IsExhausted() == false) {
+        UpdateLocation();
+        if (destination == location) {
+          current_gym->AddOnePokemon();
+          state = IN_GYM;
+          is_in_gym = true;
+          return true;
+        } else {
+          if (is_in_center == true) {
+            is_in_center = false;
+            current_center->RemoveOnePokemon();
+          }
+          return false;
         }
-        return false;
+      } else {
+        state = EXHAUSTED;
+        return true;
       }
     }
     case IN_CENTER: {
@@ -278,17 +293,29 @@ bool Pokemon::Update() {
     case TRAINING_IN_GYM: {
       if (current_gym->IsAbleToTrain(training_units_to_buy, pokemon_dollars,
                                      stamina)) {
-        stamina -= current_gym->GetStaminaCost(training_units_to_buy);
-        pokemon_dollars -= current_gym->GetDollarCost(training_units_to_buy);
-        unsigned int exp_gained =
-            current_gym->TrainPokemon(training_units_to_buy);
-        experience_points += exp_gained;
-        std::cout << "** " << name << " completed " << training_units_to_buy
-                  << " training unit(s)! **\n";
-        std::cout << "** " << name << " gained " << exp_gained
-                  << " experienced point(s)! **\n";
-        state = IN_GYM;
-        return true;
+        if (IsExhausted() == false) {
+          unsigned int stam_lost =
+              current_gym->GetStaminaCost(training_units_to_buy);
+          if (stam_lost <= stamina) {
+            stamina -= stam_lost;
+            pokemon_dollars -= current_gym->GetDollarCost(training_units_to_buy);
+          } else {
+            pokemon_dollars -= current_gym->GetDollarCost(stamina);  // deplete stamina
+            stamina = 0;  // Trained as much as possible
+          }
+          unsigned int exp_gained =
+              current_gym->TrainPokemon(training_units_to_buy);
+          experience_points += exp_gained;
+          std::cout << "** " << name << " completed " << training_units_to_buy
+                    << " training unit(s)! **\n";
+          std::cout << "** " << name << " gained " << exp_gained
+                    << " experienced point(s)! **\n";
+          state = IN_GYM;
+          return true;
+        } else {
+          state = EXHAUSTED;
+          return true;
+        }
       } else {
         return false;
       }
