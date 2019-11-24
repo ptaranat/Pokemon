@@ -129,7 +129,7 @@ void CommandHandling (Model& model, const char command) {
     }
     case 'q': {
       std::cout << "quit\n";
-      std::exit(EXIT_SUCCESS);
+      return;
     }
     default: {
       std::cout << "Error: Please enter a valid command!\n";

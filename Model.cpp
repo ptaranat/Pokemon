@@ -28,10 +28,7 @@ Model::Model() {
   std::cout << "Model default constructed.\n";
 }
 Model::~Model() {
-  for (int i = 0; i < num_objects; ++i) delete[] object_ptrs[i];
-  for (int i = 0; i < num_pokemon; ++i) delete[] pokemon_ptrs[i];
-  for (int i = 0; i < num_centers; ++i) delete[] center_ptrs[i];
-  for (int i = 0; i < num_gyms; ++i) delete[] gym_ptrs[i];
+  for (int i = 0; i < num_objects; ++i) delete object_ptrs[i];
   std::cout << "Model destructed.\n";
 }
 Pokemon* Model::GetPokemonPtr(int id) {
