@@ -46,7 +46,6 @@ void View::Plot(GameObject *ptr) {
     // grid[x][y][0] = '*';
   }
 }
-// TODO add axes
 void View::Draw() {
   int max = view_maxsize;
   for (int i = size - 1; i >= 0; i--) {
