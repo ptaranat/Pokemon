@@ -23,6 +23,9 @@ class PokemonGym : public Building {
   PokemonGym(unsigned int max_training_units, unsigned int stamina_cost,
              double dollar_cost, unsigned int exp_points_per_unit, int in_id,
              Point2D in_loc);
+  ~PokemonGym() {
+    std::cout << "PokemonGym destructed.\n";
+  }
   // Returns the cost of purchasing "unit_qty" training units.
   double GetDollarCost(unsigned int unit_qty);
   // Returns the amount of stamina required for "unit_qty" training units.

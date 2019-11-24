@@ -13,10 +13,16 @@ class GameObject {
  public:
   GameObject(char in_code);
   GameObject(Point2D in_loc, int in_id, char in_code);
+  virtual ~GameObject() {
+    std::cout << "GameObject destructed.\n";
+  };
   Point2D GetLocation();
   int GetId();
   char GetState();
   void ShowStatus();
+  virtual bool Update() = 0;
+  virtual void ShowStatus();
+  virtual bool ShouldBeVisible() = 0;
 };
 
 #endif

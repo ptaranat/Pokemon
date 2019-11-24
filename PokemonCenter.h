@@ -34,6 +34,9 @@ class PokemonCenter : public Building {
   // The rest are default.
   PokemonCenter(int in_id, double stamina_cost, unsigned int stamina_cap,
                 Point2D in_loc);
+  ~PokemonCenter() {
+    std::cout << "PokemonCenter destructed.\n";
+  }
   // Returns true if this PokemonCenter contains at least one stamina point.
   // Returns false otherwise.
   bool HasStaminaPoints();
