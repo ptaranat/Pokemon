@@ -23,5 +23,5 @@ int GameObject::GetId() { return id_num; }
 char GameObject::GetState() { return state; }
 // Outputs "(display_code)(id_num) at (location)"
 void GameObject::ShowStatus() {
-  std::cout << display_code << id_num << "at " << location;
+  std::cout << display_code << id_num << " at " << location;
 }
