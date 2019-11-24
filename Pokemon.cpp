@@ -21,7 +21,6 @@ Pokemon::Pokemon(std::string in_name, int in_id, char in_code,
 // Tells the Pokemon to start moving.
 void Pokemon::StartMoving(Point2D dest) {
   SetupDestination(dest);
-  state = MOVING;
   if (dest == location) {
     std::cout << display_code << id_num << ": I'm already there. See?\n";
   }
@@ -29,6 +28,7 @@ void Pokemon::StartMoving(Point2D dest) {
     std::cout << display_code << id_num
               << ": I am exhuasted. I may move but you cannot see me.\n";
   } else {
+    state = MOVING;
     std::cout << display_code << id_num << ": On my way.\n";
   }
 }
@@ -36,7 +36,6 @@ void Pokemon::StartMoving(Point2D dest) {
 void Pokemon::StartMovingToCenter(PokemonCenter* center) {
   current_center = center;
   SetupDestination(center->GetLocation());
-  state = MOVING_TO_CENTER;
   if (center->GetLocation() == location) {
     std::cout << display_code << id_num
               << ": I'm already at the Pokemon Center!\n";
@@ -45,6 +44,7 @@ void Pokemon::StartMovingToCenter(PokemonCenter* center) {
     std::cout << display_code << id_num
               << ": I am exhuasted so I can't move to recover stamina...\n";
   } else {
+    state = MOVING_TO_CENTER;
     std::cout << display_code << id_num << ": On my way to center "
               << center->GetId() << '\n';
   }
@@ -53,7 +53,6 @@ void Pokemon::StartMovingToCenter(PokemonCenter* center) {
 void Pokemon::StartMovingToGym(PokemonGym* gym) {
   current_gym = gym;
   SetupDestination(gym->GetLocation());
-  state = MOVING_TO_GYM;
   if (gym->GetLocation() == location) {
     std::cout << display_code << id_num
               << ": I'm already at the Pokemon Gym!\n";
@@ -62,6 +61,7 @@ void Pokemon::StartMovingToGym(PokemonGym* gym) {
     std::cout << display_code << id_num
               << ": I am exhausted so I shouldn’t be going to the gym...\n";
   } else {
+    state = MOVING_TO_GYM;
     std::cout << display_code << id_num << ": On my way to gym " << gym->GetId()
               << '\n';
   }
@@ -216,22 +216,33 @@ bool Pokemon::Update() {
     case MOVING: {
       UpdateLocation();
       if (destination == location) {
-        state == STOPPED;
+        state = STOPPED;
         return true;
+      }
+      else {
+        return false;
       }
     }
     case MOVING_TO_CENTER: {
       UpdateLocation();
       if (destination == location) {
-        state == IN_CENTER;
+        current_center->AddOnePokemon();
+        state = IN_CENTER;
         return true;
+      }
+      else {
+        return false;
       }
     }
     case MOVING_TO_GYM: {
       UpdateLocation();
       if (destination == location) {
-        state == IN_GYM;
+        current_gym->AddOnePokemon();
+        state = IN_GYM;
         return true;
+      }
+      else {
+        return false;
       }
     }
     case IN_CENTER: {
