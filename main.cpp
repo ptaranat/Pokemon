@@ -40,6 +40,18 @@ _,-'       `.     |    |  /`.   \,-'    |   \  /   |   |    \  |`.
       break;
     }
   }
+  std::cout << R"(
+::::::::::. :::.   :::.    :::.  :::. ::::::::::::
+`;;;```.;;;;;`;;  `;;;;,  `;;;  ;;`;;;;;;;;;;''''
+`]]nnn]]',[[ '[[,  [[[[[. '[[ ,[[ '[[,   [[     
+  $$$""  c$$$cc$$$c $$$ "Y$c$$c$$$cc$$$c  $$     
+  888o    888   888,888    Y88 888   888, 88,    
+  YMMMb   YMM   ""` MMM     YM YMM   ""`  MMM    
 
+Copyright (c) 2019 Panat Taranat. All rights reserved.
+
+This work is licensed under the terms of the MIT license.  
+For a copy, see <https://opensource.org/licenses/MIT>.
+  )" << endl;
   return 0;
 }
