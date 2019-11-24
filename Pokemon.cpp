@@ -88,20 +88,24 @@ void Pokemon::StartTraining(unsigned int num_training_units) {
   } else {
     if (IsExhausted()) {
       std::cout << display_code << id_num
-                << ": I am exhuasted so no more training for me...\n"; return;
+                << ": I am exhuasted so no more training for me...\n";
+      return;
     }
     if (is_in_gym == false) {
       std::cout << display_code << id_num
-                << ": I can only train in a Pokemon Gym!\n"; return;
+                << ": I can only train in a Pokemon Gym!\n";
+      return;
     }
     if (current_gym->IsAbleToTrain(num_training_units, pokemon_dollars,
                                    stamina) == false) {
       std::cout << display_code << id_num
-                << ": Not enough stamina and/or money for training.\n"; return;
+                << ": Not enough stamina and/or money for training.\n";
+      return;
     }
     if (current_gym->IsBeaten()) {
       std::cout << display_code << id_num
-                << ": Cannot train! This Pokemon Gym is already beaten!\n"; return;
+                << ": Cannot train! This Pokemon Gym is already beaten!\n";
+      return;
     }
   }
 }
@@ -125,12 +129,14 @@ void Pokemon::StartRecoveringStamina(unsigned int num_stamina_points) {
     if (current_center->CanAffordStaminaPoints(num_stamina_points,
                                                pokemon_dollars) == false) {
       std::cout << display_code << id_num
-                << ": Not enough money to recover stamina.\n"; return;
+                << ": Not enough money to recover stamina.\n";
+      return;
     }
     if (current_center->HasStaminaPoints() == false) {
       std::cout << display_code << id_num
                 << ": Cannot recover! No stamina points remaining in this "
-                   "Pokemon Center.\n"; return;
+                   "Pokemon Center.\n";
+      return;
     }
   }
 }
@@ -222,6 +228,14 @@ bool Pokemon::Update() {
         state = STOPPED;
         return true;
       } else {
+        if (is_in_gym == true) {
+          is_in_gym = false;
+          current_gym->RemoveOnePokemon();
+        }
+        if (is_in_center == true) {
+          is_in_center = false;
+          current_center->RemoveOnePokemon();
+        }
         return false;
       }
     }
@@ -233,6 +247,10 @@ bool Pokemon::Update() {
         is_in_center = true;
         return true;
       } else {
+        if (is_in_gym == true) {
+          is_in_gym = false;
+          current_gym->RemoveOnePokemon();
+        }
         return false;
       }
     }
@@ -244,6 +262,10 @@ bool Pokemon::Update() {
         is_in_gym = true;
         return true;
       } else {
+        if (is_in_center == true) {
+          is_in_center = false;
+          current_center->RemoveOnePokemon();
+        }
         return false;
       }
     }

@@ -14,7 +14,7 @@ class PokemonGym : public Building {
   // Stamina cost for a single unit of training.
   unsigned int stamina_cost_per_training_unit;
   // Pokemon dollar cost for single unit of training.
-  unsigned int dollar_cost_per_training_unit;
+  double dollar_cost_per_training_unit;
   // Amount of experience points gained for each completed training unit.
   unsigned int experience_points_per_training_unit;
 
