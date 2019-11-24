@@ -36,6 +36,9 @@ class Pokemon : public GameObject {
   bool ShouldBeVisible();
   void ShowStatus();
   bool Update();
+  std::string GetName() {
+    return this->name;
+  }
 
  protected:
   bool UpdateLocation();

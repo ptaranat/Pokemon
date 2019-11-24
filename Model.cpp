@@ -35,7 +35,7 @@ Model::~Model() {
   std::cout << "Model destructed.\n";
 }
 Pokemon* Model::GetPokemonPtr(int id) {
-  for (int i = 0; i < sizeof(pokemon_ptrs); ++i) {
+  for (int i = 0; i < num_pokemon; ++i) {
     if (pokemon_ptrs[i]->GetId() == id) {
       return pokemon_ptrs[i];
     }
@@ -43,7 +43,7 @@ Pokemon* Model::GetPokemonPtr(int id) {
   return 0;
 }
 PokemonCenter* Model::GetPokemonCenterPtr(int id) {
-  for (int i = 0; i < sizeof(center_ptrs); ++i) {
+  for (int i = 0; i < num_centers; ++i) {
     if (center_ptrs[i]->GetId() == id) {
       return center_ptrs[i];
     }
@@ -51,7 +51,7 @@ PokemonCenter* Model::GetPokemonCenterPtr(int id) {
   return 0;
 }
 PokemonGym* Model::GetPokemonGymPtr(int id) {
-  for (int i = 0; i < sizeof(gym_ptrs); ++i) {
+  for (int i = 0; i < num_gyms; ++i) {
     if (gym_ptrs[i]->GetId() == id) {
       return gym_ptrs[i];
     }
@@ -61,13 +61,13 @@ PokemonGym* Model::GetPokemonGymPtr(int id) {
 bool Model::Update() {
   time++;
   bool updated = false;
-  for (int i = 0; i < sizeof(object_ptrs); ++i) {
+  for (int i = 0; i < num_objects; ++i) {
     if (object_ptrs[i]->Update()) {
       updated = true;
     }
   }
   int total_gyms = 0;
-  for (int i = 0; i < sizeof(gym_ptrs); ++i) {
+  for (int i = 0; i < num_gyms; ++i) {
     if (total_gyms == num_gyms) {
       std::cout << "GAME OVER: You win! All Pokemon Gyms beaten!\n";
       std::exit(EXIT_SUCCESS);
@@ -76,7 +76,7 @@ bool Model::Update() {
     }
   }
   int tired_pokemon = 0;
-  for (int i = 0; i < sizeof(pokemon_ptrs); ++i) {
+  for (int i = 0; i < num_pokemon; ++i) {
     if (tired_pokemon == num_pokemon) {
       std::cout << "GAME OVER: You lose! All of your Pokemon are tired!\n";
       std::exit(EXIT_SUCCESS);
@@ -86,7 +86,7 @@ bool Model::Update() {
   }
   return updated;
 }
-// void Display(View& view) {}
+// TODO void Display(View& view) {}
 void Model::ShowStatus() {
-  for (int i = 0; i < sizeof(object_ptrs); ++i) object_ptrs[i]->ShowStatus();
+  for (int i = 0; i < num_objects; ++i) object_ptrs[i]->ShowStatus();
 }
