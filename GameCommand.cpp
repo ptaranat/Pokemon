@@ -14,8 +14,7 @@ void DoMoveToCenterCommand(Model& model, int pokemon_id, int center_id) {
       model.GetPokemonCenterPtr(center_id) != 0) {
     Pokemon* pokemon = model.GetPokemonPtr(pokemon_id);
     PokemonCenter* center = model.GetPokemonCenterPtr(center_id);
-    std::cout << "Moving " << pokemon->GetName() << " to center " << center_id
-              << '\n';
+    std::cout << "Moving " << pokemon->GetName() << " to center " << center_id << '\n';
     pokemon->StartMovingToCenter(center);
   } else {
     std::cout << "Error: Please enter a valid command!\n";
@@ -69,23 +68,22 @@ void DoGoCommand(Model& model, View& view) {
 }
 void DoRunCommand(Model& model, View& view) {
   std::cout << "Advancing one tick.\n";
-    for (int i = 0; i < 5; ++i) {
-      if (model.Update() == true) {
-        break;
-      }
+  for (int i = 0; i < 5; ++i) {
+    if (model.Update() == true) {
+      break;
+    }
   }
   model.ShowStatus();
   model.Display(view);
 }
 
-void CommandHandling (Model& model, View& view, const char command) {
-  switch(command) {
+void CommandHandling(Model& model, View& view, const char command) {
+  switch (command) {
     case 'm': {
       int id;
       double x, y;
       std::cin >> id >> x >> y;
       Point2D p = Point2D(x, y);
-      //std::cout << "moving " << id << " to " << p << '\n';
       DoMoveCommand(model, id, p);
       model.Display(view);
       break;
@@ -94,7 +92,6 @@ void CommandHandling (Model& model, View& view, const char command) {
       int id;
       int gym;
       std::cin >> id >> gym;
-      //std::cout << "moving " << id << " towards Pokemon Gym " << gym << '\n';
       DoMoveToGymCommand(model, id, gym);
       model.Display(view);
       break;
@@ -103,7 +100,6 @@ void CommandHandling (Model& model, View& view, const char command) {
       int id;
       int center;
       std::cin >> id >> center;
-      //std::cout << "moving " << id << " towards Pokemon Center " << center << '\n';
       DoMoveToCenterCommand(model, id, center);
       model.Display(view);
       break;
@@ -111,7 +107,6 @@ void CommandHandling (Model& model, View& view, const char command) {
     case 's': {
       int id;
       std::cin >> id;
-      //std::cout << "Stopping " << id << '\n';
       DoStopCommand(model, id);
       model.Display(view);
       break;
@@ -120,7 +115,6 @@ void CommandHandling (Model& model, View& view, const char command) {
       int id;
       unsigned int stamina_amount;
       std::cin >> id >> stamina_amount;
-      //std::cout << id << " is recovering " << stamina_amount << '\n';
       DoRecoverInCenterCommand(model, id, stamina_amount);
       model.Display(view);
       break;
@@ -129,23 +123,19 @@ void CommandHandling (Model& model, View& view, const char command) {
       int id;
       unsigned int unit_amount;
       std::cin >> id >> unit_amount;
-      //std::cout << id << " is training " << unit_amount << '\n';
       DoTrainInGymCommand(model, id, unit_amount);
       model.Display(view);
       break;
     }
     case 'v': {
-      //std::cout << "go\n";
       DoGoCommand(model, view);
       break;
     }
     case 'x': {
-      //std::cout << "run\n";
       DoRunCommand(model, view);
       break;
     }
     case 'q': {
-      //std::cout << "quit\n";
       model.~Model();  // TODO Probably shouldn't do this
       break;
     }
@@ -154,5 +144,4 @@ void CommandHandling (Model& model, View& view, const char command) {
       break;
     }
   }
-  //model.Display(view);
 }

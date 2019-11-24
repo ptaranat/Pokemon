@@ -39,11 +39,6 @@ void View::Plot(GameObject *ptr) {
       grid[y][x][0] = '*';
       grid[y][x][1] = ' ';
     }
-    // std::cout << grid[x][y][0];
-    // std::cout << grid[x][y][1];
-    // Not empty
-    // ptr->DrawSelf(grid[x][y]);
-    // grid[x][y][0] = '*';
   }
 }
 void View::Draw() {
@@ -51,7 +46,7 @@ void View::Draw() {
   for (int i = size - 1; i >= 0; i--) {
     if (i % int(scale) == 0) {
       std::cout << std::left << std::setw(2) << max;
-      max -= scale*2;
+      max -= scale * 2;
     } else {
       std::cout << "  ";
     }
@@ -67,9 +62,8 @@ void View::Draw() {
   for (int i = 0; temp <= view_maxsize; i++) {
     if (i % int(scale) == 0) {
       std::cout << std::setw(2) << temp;
-      temp += scale*2;
-    }
-    else {
+      temp += scale * 2;
+    } else {
       std::cout << "  ";
     }
   }

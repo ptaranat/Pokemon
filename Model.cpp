@@ -86,8 +86,6 @@ bool Model::Update() {
   return updated;
 }
 void Model::Display(View& view) {
-  // std::cout << "Time: " << time << '\n';
-  // ShowStatus();
   view.Clear();
   for (int i = 0; i < num_objects; ++i) {
     view.Plot(object_ptrs[i]);

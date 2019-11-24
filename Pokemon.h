@@ -23,9 +23,7 @@ class Pokemon : public GameObject {
   Pokemon(char in_code);
   Pokemon(std::string in_name, int in_id, char in_code, unsigned int in_speed,
           Point2D in_loc);
-  ~Pokemon() {
-    std::cout << "Pokemon destructed.\n";
-  };
+  ~Pokemon() { std::cout << "Pokemon destructed.\n"; };
   void StartMoving(Point2D dest);
   void StartMovingToCenter(PokemonCenter* center);
   void StartMovingToGym(PokemonGym* gym);
@@ -36,9 +34,7 @@ class Pokemon : public GameObject {
   bool ShouldBeVisible();
   void ShowStatus();
   bool Update();
-  std::string GetName() {
-    return this->name;
-  }
+  std::string GetName() { return this->name; }
 
  protected:
   bool UpdateLocation();

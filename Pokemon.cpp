@@ -38,12 +38,12 @@ void Pokemon::StartMovingToCenter(PokemonCenter* center) {
   if (center->GetLocation() == location) {
     std::cout << display_code << id_num
               << ": I'm already at the Pokemon Center!\n";
-              return;
+    return;
   }
   if (IsExhausted()) {
     std::cout << display_code << id_num
               << ": I am exhuasted so I can't move to recover stamina...\n";
-              return;
+    return;
   } else {
     state = MOVING_TO_CENTER;
     std::cout << display_code << id_num << ": On my way to center "
@@ -57,12 +57,12 @@ void Pokemon::StartMovingToGym(PokemonGym* gym) {
   if (gym->GetLocation() == location) {
     std::cout << display_code << id_num
               << ": I'm already at the Pokemon Gym!\n";
-              return;
+    return;
   }
   if (IsExhausted()) {
     std::cout << display_code << id_num
               << ": I am exhausted so I shouldn't be going to the gym...\n";
-              return;
+    return;
   } else {
     state = MOVING_TO_GYM;
     std::cout << display_code << id_num << ": On my way to gym " << gym->GetId()
@@ -248,7 +248,6 @@ bool Pokemon::Update() {
     }
     case MOVING_TO_CENTER: {
       if (UpdateLocation()) {
-        //std::cout << "ADD ONE";
         current_center->AddOnePokemon();
         state = IN_CENTER;
         is_in_center = true;

@@ -76,8 +76,7 @@ unsigned int PokemonCenter::DistributeStamina(unsigned int points_needed) {
 // - Prints PokemonCenter (id) has ran out of stamina points.
 // - Returns true if stamina is depleted; returns false if it is not depleted.
 bool PokemonCenter::Update() {
-  if (HasStaminaPoints() == false &&
-      state == STAMINA_POINTS_AVAILABLE) {
+  if (HasStaminaPoints() == false && state == STAMINA_POINTS_AVAILABLE) {
     state = NO_STAMINA_POINTS_AVAILABLE;
     display_code = 'c';
     std::cout << "PokemonCenter " << id_num
