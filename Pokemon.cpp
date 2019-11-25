@@ -158,7 +158,8 @@ bool Pokemon::IsExhausted() {
 }
 // Returns true if this Pokemon is NOT exhuasuted.
 bool Pokemon::ShouldBeVisible() {
-  if (IsExhausted() == false) {
+  ////if (IsExhausted() == false) {
+  if (stamina != 0) {
     return true;
   } else {
     return false;
@@ -208,10 +209,11 @@ void Pokemon::ShowStatus() {
                 << current_center->GetId() << '\n';
       break;
     }
+    case EXHAUSTED: {
+      std::cout << '\n';
+      break;
+    }
     default: {
-      std::cout << "\n\tStamina: " << stamina << '\n'
-                << "\tPokemon Dollars: " << pokemon_dollars << '\n'
-                << "\tExperience Points: " << experience_points << '\n';
       break;
     }
   }
@@ -242,37 +244,50 @@ bool Pokemon::Update() {
           return false;
         }
       } else {
+        std::cout << GetName() << " is out of stamina and can't move.\n";
         state = EXHAUSTED;
         return true;
       }
     }
     case MOVING_TO_CENTER: {
-      if (UpdateLocation()) {
-        current_center->AddOnePokemon();
-        state = IN_CENTER;
-        is_in_center = true;
-        return true;
-      } else {
-        if (is_in_gym == true) {
-          is_in_gym = false;
-          current_gym->RemoveOnePokemon();
+      if (IsExhausted() == false) {
+        if (UpdateLocation()) {
+          current_center->AddOnePokemon();
+          state = IN_CENTER;
+          is_in_center = true;
+          return true;
+        } else {
+          if (is_in_gym == true) {
+            is_in_gym = false;
+            current_gym->RemoveOnePokemon();
+          }
+          return false;
         }
-        return false;
-      }
+      } else {
+        std::cout << GetName() << " is out of stamina and can't move.\n";
+        state = EXHAUSTED;
+        return true;
+        }
     }
     case MOVING_TO_GYM: {
-      if (UpdateLocation()) {
-        current_gym->AddOnePokemon();
-        state = IN_GYM;
-        is_in_gym = true;
-        return true;
-      } else {
-        if (is_in_center == true) {
-          is_in_center = false;
-          current_center->RemoveOnePokemon();
+      if (IsExhausted() == false) {
+        if (UpdateLocation()) {
+          current_gym->AddOnePokemon();
+          state = IN_GYM;
+          is_in_gym = true;
+          return true;
+        } else {
+          if (is_in_center == true) {
+            is_in_center = false;
+            current_center->RemoveOnePokemon();
+          }
+          return false;
         }
-        return false;
-      }
+      } else {
+        std::cout << GetName() << " is out of stamina and can't move.\n";
+        state = EXHAUSTED;
+        return true;
+        }
     }
     case IN_CENTER: {
       return false;
@@ -328,9 +343,6 @@ bool Pokemon::Update() {
       }
     }
     default: {
-      std::cout << "\tStamina: " << stamina << '\n'
-                << "\tPokemon Dollars: " << pokemon_dollars << '\n'
-                << "\tExperience Points: " << experience_points << '\n';
       return false;
     }
   }

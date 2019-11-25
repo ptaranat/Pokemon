@@ -1,4 +1,5 @@
 #include "GameCommand.h"
+#include <limits>
 
 void DoMoveCommand(Model& model, int pokemon_id, Point2D p1) {
   if (model.GetPokemonPtr(pokemon_id)) {
@@ -67,7 +68,7 @@ void DoGoCommand(Model& model, View& view) {
   model.Display(view);
 }
 void DoRunCommand(Model& model, View& view) {
-  std::cout << "Advancing one tick.\n";
+  std::cout << "Advancing to next event.\n";
   for (int i = 0; i < 5; ++i) {
     if (model.Update() == true) {
       break;
@@ -78,6 +79,12 @@ void DoRunCommand(Model& model, View& view) {
 }
 
 void CommandHandling(Model& model, View& view, const char command) {
+  if (std::cin.fail()) {
+    std::cin.clear();
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::cout << "Error: Please enter a valid command!\n";
+    return;
+  }
   switch (command) {
     case 'm': {
       int id;

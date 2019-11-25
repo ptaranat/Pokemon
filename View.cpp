@@ -30,14 +30,16 @@ void View::Clear() {
 }
 
 void View::Plot(GameObject *ptr) {
-  int x, y;
-  if (GetSubscripts(x, y, ptr->GetLocation()) == true) {
-    // Empty
-    if (grid[y][x][0] == '.') {
-      ptr->DrawSelf(grid[y][x]);
-    } else {
-      grid[y][x][0] = '*';
-      grid[y][x][1] = ' ';
+  if (ptr->ShouldBeVisible()) {
+    int x, y;
+    if (GetSubscripts(x, y, ptr->GetLocation()) == true) {
+      // Empty
+      if (grid[y][x][0] == '.') {
+        ptr->DrawSelf(grid[y][x]);
+      } else {
+        grid[y][x][0] = '*';
+        grid[y][x][1] = ' ';
+      }
     }
   }
 }

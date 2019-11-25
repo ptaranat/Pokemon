@@ -18,8 +18,9 @@ void Building::AddOnePokemon() { pokemon_count += 1; }
 void Building::RemoveOnePokemon() { pokemon_count -= 1; }
 // Prints “(pokemon_count) pokemon is/are in this building”
 void Building::ShowStatus() {
-  GameObject::ShowStatus();
-  std::cout << '\n';
+  ////GameObject::ShowStatus();
+  ////std::cout << '\n';
+  std::cout << display_code << id_num << " located at " << location << '\n';
   if (pokemon_count == 1) {
     std::cout << '\t' << pokemon_count << " Pokemon is in this building\n";
   } else {
