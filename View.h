@@ -14,7 +14,7 @@ class View {
   // Coordinates of lower left-hand corner of grid.
   Point2D origin;
   // Array to hold characters that make up grid
-  char grid[view_maxsize][view_maxsize][2] = {' '};
+  char grid[view_maxsize][view_maxsize][2] = {};
 
   // Calculates the column and row subscripts of the grid array that correspond
   // to supplied location. Returns true if subscripts are valid.
