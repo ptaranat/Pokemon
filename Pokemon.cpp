@@ -38,9 +38,23 @@ void Pokemon::StartMovingToCenter(PokemonCenter* center) {
   if (center->GetLocation() == location) {
     std::cout << display_code << id_num
               << ": I'm already at the Pokemon Center!\n";
+    if (is_in_center == false) {
+      is_in_center = true;
+      center->AddOnePokemon();
+    }
+    state = IN_CENTER;
+    current_center = center;
     return;
   }
   if (IsExhausted()) {
+    // Remove this @383
+    // Game should end if exhausted in center
+    /*
+    if (is_in_center) {
+      state = IN_CENTER;
+      return;
+    }
+    */
     std::cout << display_code << id_num
               << ": I am exhuasted so I can't move to recover stamina...\n";
     return;
@@ -57,6 +71,12 @@ void Pokemon::StartMovingToGym(PokemonGym* gym) {
   if (gym->GetLocation() == location) {
     std::cout << display_code << id_num
               << ": I'm already at the Pokemon Gym!\n";
+    if (is_in_gym == false) {
+      is_in_gym = true;
+      gym->AddOnePokemon();
+    }
+    state = IN_GYM;
+    current_gym = gym;
     return;
   }
   if (IsExhausted()) {
@@ -370,6 +390,9 @@ void Pokemon::SetupDestination(Point2D dest) {
   destination = dest;
   delta = (destination - location) *
           (speed / GetDistanceBetween(destination, location));
+  if (GetDistanceBetween(destination, location) == 0) {
+    delta = Vector2D();
+  }
 }
 
 // Non-members
