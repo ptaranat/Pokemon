@@ -4,10 +4,12 @@
 
 Pokemon::Pokemon() : GameObject('P') {
   speed = 5;
+  state = STOPPED;
   std::cout << "Pokemon default constructed.\n";
 }
 Pokemon::Pokemon(char in_code) : GameObject(in_code) {
   speed = 5;
+  state = STOPPED;
   display_code = in_code;
 }
 Pokemon::Pokemon(std::string in_name, int in_id, char in_code,
@@ -15,6 +17,7 @@ Pokemon::Pokemon(std::string in_name, int in_id, char in_code,
     : GameObject(in_loc, in_id, in_code) {
   speed = in_speed;
   name = in_name;
+  state = STOPPED;
   std::cout << "Pokemon constructed.\n";
 }
 // Tells the Pokemon to start moving.
