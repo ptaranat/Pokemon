@@ -8,7 +8,6 @@ Pokemon::Pokemon() : GameObject('P') {
 }
 Pokemon::Pokemon(char in_code) : GameObject(in_code) {
   speed = 5;
-  state = STOPPED;
   display_code = in_code;
 }
 Pokemon::Pokemon(std::string in_name, int in_id, char in_code,
