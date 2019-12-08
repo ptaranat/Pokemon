@@ -2,10 +2,12 @@
 
 Model::Model() {
   time = 0;
-  Pokemon* p1 = new Pokemon("Pikachu", 1, 'P', 2, Point2D(5, 1));
+  //Pokemon* p1 = new Pokemon("Pikachu", 1, 'P', 2, Point2D(5, 1));
+  Pokemon* p1 = new Pokemon("Pikachu", 2, 20, 5, 4, 5, 1, 'P', Point2D(5, 1));
   object_ptrs[0] = p1;
   pokemon_ptrs[0] = p1;
-  Pokemon* p2 = new Pokemon("Bulbasaur", 2, 'P', 1, Point2D(10, 1));
+  //Pokemon* p2 = new Pokemon("Bulbasaur", 2, 'P', 1, Point2D(10, 1));
+  Pokemon* p2 = new Pokemon("Bulbasaur", 1, 20, 5, 4, 5, 2, 'P', Point2D(10, 1));
   object_ptrs[1] = p2;
   pokemon_ptrs[1] = p2;
   PokemonCenter* c1 = new PokemonCenter(1, 1, 100, Point2D(1, 20));

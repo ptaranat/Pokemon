@@ -1,4 +1,5 @@
 #include "GameCommand.h"
+
 #include <limits>
 
 void DoMoveCommand(Model& model, int pokemon_id, Point2D p1) {
@@ -15,7 +16,8 @@ void DoMoveToCenterCommand(Model& model, int pokemon_id, int center_id) {
       model.GetPokemonCenterPtr(center_id) != 0) {
     Pokemon* pokemon = model.GetPokemonPtr(pokemon_id);
     PokemonCenter* center = model.GetPokemonCenterPtr(center_id);
-    std::cout << "Moving " << pokemon->GetName() << " to center " << center_id << '\n';
+    std::cout << "Moving " << pokemon->GetName() << " to center " << center_id
+              << '\n';
     pokemon->StartMovingToCenter(center);
   } else {
     std::cout << "Error: Please enter a valid command!\n";
@@ -26,8 +28,21 @@ void DoMoveToGymCommand(Model& model, int pokemon_id, int gym_id) {
       model.GetPokemonGymPtr(gym_id) != 0) {
     Pokemon* pokemon = model.GetPokemonPtr(pokemon_id);
     PokemonGym* gym = model.GetPokemonGymPtr(gym_id);
-    std::cout << "Moving " << pokemon->GetName() << " to gym " << gym_id << '\n';
+    std::cout << "Moving " << pokemon->GetName() << " to gym " << gym_id
+              << '\n';
     pokemon->StartMovingToGym(gym);
+  } else {
+    std::cout << "Error: Please enter a valid command!\n";
+  }
+}
+void DoMoveToArenaCommand(Model& model, int pokemon_id, int arena_id) {
+  if (model.GetPokemonPtr(pokemon_id) != 0 &&
+      model.GetArenaPtr(arena_id) != 0) {
+    Pokemon* pokemon = model.GetPokemonPtr(pokemon_id);
+    PokemonGym* arena = model.GetArenaPtr(arena_id);
+    std::cout << "Moving " << pokemon->GetName() << " to arena " << arena_id
+              << '\n';
+    pokemon->StartMovingToArena(arena);
   } else {
     std::cout << "Error: Please enter a valid command!\n";
   }
@@ -57,6 +72,18 @@ void DoRecoverInCenterCommand(Model& model, int pokemon_id,
     Pokemon* pokemon = model.GetPokemonPtr(pokemon_id);
     std::cout << "Recovering " << pokemon->GetName() << "'s stamina\n";
     pokemon->StartRecoveringStamina(stamina_points);
+  } else {
+    std::cout << "Error: Please enter a valid command!\n";
+  }
+}
+void DoBattleCommand(Model& model, int pokemon_id, int rival_id) {
+  if (model.GetPokemonPtr(pokemon_id) != 0 &&
+      model.GetRivalPtr(rival_id) != 0) {
+    Pokemon* pokemon = model.GetPokemonPtr(pokemon_id);
+    Rival* rival = model.GetRivalPtr(rival_id);
+    std::cout << pokemon->GetName() << " is battling " << rival->GetName()
+              << "!\n";
+    pokemon->StartBattle();
   } else {
     std::cout << "Error: Please enter a valid command!\n";
   }
@@ -111,6 +138,14 @@ void CommandHandling(Model& model, View& view, const char command) {
       model.Display(view);
       break;
     }
+    case 'a': {
+      int id;
+      int arena;
+      std::cin >> id >> arena;
+      DoMoveToArenaCommand(model, id, arena);
+      model.Display(view);
+      break;
+    }
     case 's': {
       int id;
       std::cin >> id;
@@ -131,6 +166,14 @@ void CommandHandling(Model& model, View& view, const char command) {
       unsigned int unit_amount;
       std::cin >> id >> unit_amount;
       DoTrainInGymCommand(model, id, unit_amount);
+      model.Display(view);
+      break;
+    }
+    case 'b': {
+      int id;
+      int rival_id;
+      std::cin >> id >> rival_id;
+      DoBattleCommand(model, id, rival_id);
       model.Display(view);
       break;
     }

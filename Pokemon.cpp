@@ -12,6 +12,7 @@ Pokemon::Pokemon(char in_code) : GameObject(in_code) {
   state = STOPPED;
   display_code = in_code;
 }
+/*
 Pokemon::Pokemon(std::string in_name, int in_id, char in_code,
                  unsigned int in_speed, Point2D in_loc)
     : GameObject(in_loc, in_id, in_code) {
@@ -19,6 +20,19 @@ Pokemon::Pokemon(std::string in_name, int in_id, char in_code,
   name = in_name;
   state = STOPPED;
   std::cout << "Pokemon constructed.\n";
+}
+*/
+Pokemon::Pokemon(std::string in_name, double in_speed, double hp, double phys_dmg,
+                 double magic_dmg, double def, int in_id, char in_code,
+                 Point2D in_loc)
+    : GameObject(in_loc, in_id, 'P') {
+  name = in_name;
+  speed = in_speed;
+  state = STOPPED;
+  health = hp;
+  physical_damage = phys_dmg;
+  magical_damage = magic_dmg;
+  defense = def;
 }
 // Tells the Pokemon to start moving.
 void Pokemon::StartMoving(Point2D dest) {
@@ -89,6 +103,30 @@ void Pokemon::StartMovingToGym(PokemonGym* gym) {
     state = MOVING_TO_GYM;
     std::cout << display_code << id_num << ": On my way to gym " << gym->GetId()
               << '\n';
+  }
+}
+void Pokemon::StartMovingToArena(BattleArena* arena) {
+  current_arena = arena;
+  SetupDestination(arena->GetLocation());
+  if (arena->GetLocation() == location) {
+    std::cout << display_code << id_num
+              << ": I'm already at the Battle Arena!\n";
+    if (is_in_arena == false) {
+      is_in_arena = true;
+      arena->AddOnePokemon();
+    }
+    state = IN_ARENA;
+    current_arena = arena;
+    return;
+  }
+  if (IsExhausted()) {
+    std::cout << display_code << id_num
+              << ": I am exhausted so I shouldn't be going to the arena...\n";
+    return;
+  } else {
+    state = MOVING_TO_ARENA;
+    std::cout << display_code << id_num << ": On my way to arena "
+              << arena->GetId() << '\n';
   }
 }
 // Utility function to find minimum of two unsigned ints
@@ -242,6 +280,7 @@ void Pokemon::ShowStatus() {
   std::cout << "\tStamina: " << stamina << '\n'
             << "\tPokemon Dollars: " << pokemon_dollars << '\n'
             << "\tExperience Points: " << experience_points << '\n';
+            // TODO add phys dmg, magic, health
 }
 // Updates depending on state.
 bool Pokemon::Update() {
@@ -263,6 +302,10 @@ bool Pokemon::Update() {
             is_in_center = false;
             current_center->RemoveOnePokemon();
           }
+          if (is_in_arena == true) {
+            is_in_arena = false;
+            current_arena->RemoveOnePokemon();
+          }
           return false;
         }
       } else {
@@ -283,13 +326,17 @@ bool Pokemon::Update() {
             is_in_gym = false;
             current_gym->RemoveOnePokemon();
           }
+          if (is_in_arena == true) {
+            is_in_arena = false;
+            current_arena->RemoveOnePokemon();
+          }
           return false;
         }
       } else {
         std::cout << GetName() << " is out of stamina and can't move.\n";
         state = EXHAUSTED;
         return true;
-        }
+      }
     }
     case MOVING_TO_GYM: {
       if (IsExhausted() == false) {
@@ -303,13 +350,41 @@ bool Pokemon::Update() {
             is_in_center = false;
             current_center->RemoveOnePokemon();
           }
+          if (is_in_arena == true) {
+            is_in_arena = false;
+            current_arena->RemoveOnePokemon();
+          }
           return false;
         }
       } else {
         std::cout << GetName() << " is out of stamina and can't move.\n";
         state = EXHAUSTED;
         return true;
+      }
+    }
+    case MOVING_TO_ARENA: {
+      if (IsExhausted() == false) {
+        if (UpdateLocation()) {
+          current_arena->AddOnePokemon();
+          state = IN_ARENA;
+          is_in_arena = true;
+          return true;
+        } else {
+          if (is_in_center == true) {
+            is_in_center = false;
+            current_center->RemoveOnePokemon();
+          }
+          if (is_in_gym == true) {
+            is_in_gym = false;
+            current_gym->RemoveOnePokemon();
+          }
+          return false;
         }
+      } else {
+        std::cout << GetName() << " is out of stamina and can't move.\n";
+        state = EXHAUSTED;
+        return true;
+      }
     }
     case IN_CENTER: {
       return false;
@@ -364,9 +439,52 @@ bool Pokemon::Update() {
         return false;
       }
     }
+    // PA4 Step 1
+    case FAINTED: {
+      return false;
+    }
+    case BATTLE: {
+      stamina -= current_arena->GetStaminaCost();
+      pokemon_dollars -= current_arena->GetDollarCost();
+      StartBattle();
+      if (health > 0 && target->get_health() <= 0) {
+        health = store_health;
+        state = IN_ARENA;
+        target->IsAlive();
+      } else {
+        state = FAINTED;
+        target->IsAlive();
+      }
+    }
     default: {
       return false;
     }
+  }
+}
+void Pokemon::TakeHit(double phys_dmg, double magic_dmg, double def) {
+  double attack;
+  if (rand() % 2 == 0)
+    attack = phys_dmg;
+  else
+    attack = magic_dmg;
+  double damage = (100.0 - defense) / 100 * attack;
+  health -= damage;
+}
+// TODO
+void Pokemon::ReadyBattle(Rival* in_target) {
+  if (state == IN_ARENA && current_arena->IsAbleToFight() &&
+      current_arena->isBeaten() != false && in_target->isAlive()) {
+    target = in_target;
+    state = BATTLE;
+  } else
+    state = IN_ARENA;
+}
+
+bool Pokemon::StartBattle() {
+  while (health > 0 or target->health > 0) {
+    // Rival hits first
+    TakeHit(target->GetPhysDmg(), target->GetMagicDmg(), defense);
+    target->TakeHit(physical_damage, magical_damage, target->GetDefense());
   }
 }
 
