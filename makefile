@@ -5,7 +5,7 @@ OBJS=main.o Building.o Point2D.o Vector2D.o GameObject.o GameCommand.o PokemonCe
 default: PA4
 
 PA4: $(OBJS)
-	$(CC) -o PA4 $(OBJS) 
+	$(CC) -o PA4.exe $(OBJS) 
 
 Vector2D.o: Vector2D.cpp Vector2D.h
 	$(CC) -c Vector2D.cpp -o Vector2D.o 
@@ -47,4 +47,4 @@ main.o: main.cpp Building.h Point2D.h Vector2D.h GameCommand.h PokemonCenter.h M
 	$(CC) -c main.cpp
 
 clean: 
-	rm $(OBJS) PA4
+	rm $(OBJS) PA4.exe

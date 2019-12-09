@@ -37,16 +37,9 @@ Model::Model() {
   object_ptrs.push_back(r2);
   object_ptrs.push_back(r3);
 
-  active_ptrs.push_back(p1);
-  active_ptrs.push_back(p2);
-  active_ptrs.push_back(c1);
-  active_ptrs.push_back(c2);
-  active_ptrs.push_back(g1);
-  active_ptrs.push_back(g2);
-  active_ptrs.push_back(a1);
-  active_ptrs.push_back(r1);
-  active_ptrs.push_back(r2);
-  active_ptrs.push_back(r3);
+  // Use the copy constructor for list
+  std::list<GameObject*> temp_list(object_ptrs);
+  active_ptrs = temp_list;
 
   std::cout << "Model default constructed.\n";
 }
