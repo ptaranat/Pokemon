@@ -149,14 +149,14 @@ bool Model::Update() {
 }
 void Model::Display(View& view) {
   view.Clear();
-  for (auto obj : active_ptrs) {
+  for (auto& obj : active_ptrs) {
     view.Plot(obj);
   }
   view.Draw();
 }
 void Model::ShowStatus() {
   std::cout << "Time: " << time << '\n';
-  for (auto obj : object_ptrs) {
+  for (auto& obj : object_ptrs) {
     obj->ShowStatus();
   }
 }
