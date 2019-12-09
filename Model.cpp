@@ -3,11 +3,11 @@
 Model::Model() {
   time = 0;
   //Pokemon* p1 = new Pokemon("Pikachu", 1, 'P', 2, Point2D(5, 1));
-  Pokemon* p1 = new Pokemon("Pikachu", 2, 20, 5, 4, 5, 1, 'P', Point2D(5, 1));
+  Pokemon* p1 = new Pokemon("Pikachu", 2, 23, 3, 6, 12, 1, 'P', Point2D(5, 1));
   object_ptrs[0] = p1;
   pokemon_ptrs[0] = p1;
   //Pokemon* p2 = new Pokemon("Bulbasaur", 2, 'P', 1, Point2D(10, 1));
-  Pokemon* p2 = new Pokemon("Bulbasaur", 1, 20, 5, 4, 5, 2, 'P', Point2D(10, 1));
+  Pokemon* p2 = new Pokemon("Bulbasaur", 1, 26, 4, 3.7, 5, 2, 'P', Point2D(10, 1));
   object_ptrs[1] = p2;
   pokemon_ptrs[1] = p2;
   PokemonCenter* c1 = new PokemonCenter(1, 1, 100, Point2D(1, 20));
@@ -22,11 +22,24 @@ Model::Model() {
   PokemonGym* g2 = new PokemonGym(20, 5, 7.5, 8, 2, Point2D(5, 5));
   object_ptrs[5] = g2;
   gym_ptrs[1] = g2;
+  BattleArena* a1 = new BattleArena(3, 3, 2.5, 1, Point2D(15,12));
+  object_ptrs[6] = a1;
+  arena_ptrs[0] = a1;
+  Rival* r1 = new Rival("burhack", 16, 3, 7.2, 20, a1, 1, Point2D(15,12));
+  object_ptrs[7] = r1;
+  rival_ptrs[0] = r1;
+  Rival* r2 = new Rival("mmark9", 29, 4, 5.2, 12, a1, 2, Point2D(15,12));
+  object_ptrs[8] = r2;
+  rival_ptrs[1] = r2;
+  Rival* r3 = new Rival("Densmore(aka BigBoss)", 41, 6, 8.2, 18, a1, 3, Point2D(15,12));
+  object_ptrs[9] = r3;
+  rival_ptrs[2] = r3;
 
-  num_objects = 6;
+  num_objects = 10;
   num_pokemon = 2;
   num_centers = 2;
   num_gyms = 2;
+  num_rivals = 2;
   std::cout << "Model default constructed.\n";
 }
 Model::~Model() {
@@ -53,6 +66,22 @@ PokemonGym* Model::GetPokemonGymPtr(int id) {
   for (int i = 0; i < num_gyms; ++i) {
     if (gym_ptrs[i]->GetId() == id) {
       return gym_ptrs[i];
+    }
+  }
+  return 0;
+}
+Rival* Model::GetRivalPtr(int id) {
+  for (int i = 0; i < num_rivals; ++i) {
+    if (rival_ptrs[i]->GetId() == id) {
+      return rival_ptrs[i];
+    }
+  }
+  return 0;
+}
+BattleArena* Model::GetBattleArenaPtr(int id) {
+  for (int i = 0; i < num_arenas; ++i) {
+    if (arena_ptrs[i]->GetId() == id) {
+      return arena_ptrs[i];
     }
   }
   return 0;

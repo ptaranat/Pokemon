@@ -12,24 +12,15 @@ Pokemon::Pokemon(char in_code) : GameObject(in_code) {
   state = STOPPED;
   display_code = in_code;
 }
-/*
-Pokemon::Pokemon(std::string in_name, int in_id, char in_code,
-                 unsigned int in_speed, Point2D in_loc)
-    : GameObject(in_loc, in_id, in_code) {
-  speed = in_speed;
-  name = in_name;
-  state = STOPPED;
-  std::cout << "Pokemon constructed.\n";
-}
-*/
-Pokemon::Pokemon(std::string in_name, double in_speed, double hp, double phys_dmg,
-                 double magic_dmg, double def, int in_id, char in_code,
-                 Point2D in_loc)
+Pokemon::Pokemon(std::string in_name, double in_speed, double hp,
+                 double phys_dmg, double magic_dmg, double def, int in_id,
+                 char in_code, Point2D in_loc)
     : GameObject(in_loc, in_id, 'P') {
   name = in_name;
   speed = in_speed;
   state = STOPPED;
   health = hp;
+  store_health = health;
   physical_damage = phys_dmg;
   magical_damage = magic_dmg;
   defense = def;
@@ -203,6 +194,63 @@ void Pokemon::StartRecoveringStamina(unsigned int num_stamina_points) {
     }
   }
 }
+
+void Pokemon::ReadyBattle(Rival* in_target) {
+  if (state == IN_ARENA &&
+      current_arena->IsAbleToFight(pokemon_dollars, stamina) &&
+      current_arena->IsBeaten() == false && in_target->IsAlive()) {
+    target = in_target;
+    state = BATTLE;
+    pokemon_dollars -= current_arena->GetDollarCost();
+    std::cout << display_code << id_num << ": Getting ready for the battle\n";
+  } else {
+    if (is_in_arena == false) {
+      std::cout << display_code << id_num
+                << ": I can only fight in a Battle Arena!\n";
+      return;
+    }
+    if (current_arena->IsAbleToFight(pokemon_dollars, stamina) == false) {
+      std::cout << display_code << id_num
+                << ": Not enough stamina and/or money for training.\n";
+      return;
+    }
+    if (current_arena->IsBeaten()) {
+      std::cout << display_code << id_num
+                << ": Cannot train! This Battle Arena is already beaten!\n";
+      return;
+    }
+  }
+}
+
+void Pokemon::TakeHit(double phys_dmg, double magic_dmg, double def) {
+  double attack;
+  std::cout << GetName() << ": ";
+  if (rand() % 2 == 0) {
+    attack = phys_dmg;
+    std::cout << "Physical damage hurts, Master!\n";
+  } else {
+    attack = magic_dmg;
+    std::cout << "It is magic, Master!\n";
+  }
+  double damage = (100.0 - defense) / 100 * attack;
+  health -= damage;
+  std::cout << "Damage: " << damage << '\n'
+            << "Health: " << health << '\n'
+            << "*******\n";
+}
+
+bool Pokemon::StartBattle() {
+  if (health > 0 or target->GetHealth() > 0) {
+    // Rival hits first
+    TakeHit(target->GetPhysDmg(), target->GetMagicDmg(), defense);
+    target->TakeHit(physical_damage, magical_damage, target->GetDefense());
+    return false;
+  } else if (health <= 0) {
+    return true;  // Lost to rival
+  } else {
+    return true;  // Beat the rival
+  }
+}
 // Tells this Pokemon to stop doing whatever it was doing.
 void Pokemon::Stop() {
   state = STOPPED;
@@ -252,12 +300,22 @@ void Pokemon::ShowStatus() {
                 << '\n';
       break;
     }
+    case MOVING_TO_ARENA: {
+      std::cout << "heading to Battle Arena " << current_arena->GetId()
+                << " at a speed of " << speed << " at each step of " << delta
+                << '\n';
+      break;
+    }
     case IN_CENTER: {
       std::cout << "inside Pokemon Center " << current_center->GetId() << '\n';
       break;
     }
     case IN_GYM: {
       std::cout << "inside Pokemon Gym " << current_gym->GetId() << '\n';
+      break;
+    }
+    case IN_ARENA: {
+      std::cout << "inside Battle Arena " << current_arena->GetId() << '\n';
       break;
     }
     case TRAINING_IN_GYM: {
@@ -269,18 +327,23 @@ void Pokemon::ShowStatus() {
                 << current_center->GetId() << '\n';
       break;
     }
+    case FAINTED: {
+      std::cout << "fainted\n";
+      break;
+    }
     case EXHAUSTED: {
       std::cout << '\n';
       break;
     }
-    default: {
-      break;
-    }
+    default: { break; }
   }
   std::cout << "\tStamina: " << stamina << '\n'
             << "\tPokemon Dollars: " << pokemon_dollars << '\n'
-            << "\tExperience Points: " << experience_points << '\n';
-            // TODO add phys dmg, magic, health
+            << "\tExperience Points: " << experience_points << '\n'
+            << "\tHealth: " << health << '\n'
+            << "\tPhysical Damage: " << physical_damage << '\n'
+            << "\tMagical Damage: " << magical_damage << '\n'
+            << "\tDefense: " << defense << '\n';
 }
 // Updates depending on state.
 bool Pokemon::Update() {
@@ -445,46 +508,23 @@ bool Pokemon::Update() {
     }
     case BATTLE: {
       stamina -= current_arena->GetStaminaCost();
-      pokemon_dollars -= current_arena->GetDollarCost();
       StartBattle();
-      if (health > 0 && target->get_health() <= 0) {
+      if (health > 0 && target->GetHealth() <= 0) {
+        std::cout << "Congrats Master, you defeated one rival!\n";
         health = store_health;
         state = IN_ARENA;
         target->IsAlive();
-      } else {
+        return true;
+      } else if (health <= 0) {
+        std::cout << "No! You lost the battle!\n";
         state = FAINTED;
         target->IsAlive();
+        return true;
+      } else {
+        return false;
       }
     }
-    default: {
-      return false;
-    }
-  }
-}
-void Pokemon::TakeHit(double phys_dmg, double magic_dmg, double def) {
-  double attack;
-  if (rand() % 2 == 0)
-    attack = phys_dmg;
-  else
-    attack = magic_dmg;
-  double damage = (100.0 - defense) / 100 * attack;
-  health -= damage;
-}
-// TODO
-void Pokemon::ReadyBattle(Rival* in_target) {
-  if (state == IN_ARENA && current_arena->IsAbleToFight() &&
-      current_arena->isBeaten() != false && in_target->isAlive()) {
-    target = in_target;
-    state = BATTLE;
-  } else
-    state = IN_ARENA;
-}
-
-bool Pokemon::StartBattle() {
-  while (health > 0 or target->health > 0) {
-    // Rival hits first
-    TakeHit(target->GetPhysDmg(), target->GetMagicDmg(), defense);
-    target->TakeHit(physical_damage, magical_damage, target->GetDefense());
+    default: { return false; }
   }
 }
 

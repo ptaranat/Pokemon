@@ -68,7 +68,7 @@ unsigned int PokemonGym::TrainPokemon(unsigned int training_units) {
 // If the PokemonGym has zero training units remaining, set the state to
 // BEATEN and display_code to 'g'.
 bool PokemonGym::Update() {
-  if (GetNumTrainingUnitsRemaining() == 0 && state == NOT_BEATEN) {
+  if (IsBeaten() && state == NOT_BEATEN) {
     state = BEATEN;
     display_code = 'g';
     std::cout << display_code << id_num << " has been beaten.\n";

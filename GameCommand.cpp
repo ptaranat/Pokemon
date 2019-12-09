@@ -37,9 +37,9 @@ void DoMoveToGymCommand(Model& model, int pokemon_id, int gym_id) {
 }
 void DoMoveToArenaCommand(Model& model, int pokemon_id, int arena_id) {
   if (model.GetPokemonPtr(pokemon_id) != 0 &&
-      model.GetArenaPtr(arena_id) != 0) {
+      model.GetBattleArenaPtr(arena_id) != 0) {
     Pokemon* pokemon = model.GetPokemonPtr(pokemon_id);
-    PokemonGym* arena = model.GetArenaPtr(arena_id);
+    BattleArena* arena = model.GetBattleArenaPtr(arena_id);
     std::cout << "Moving " << pokemon->GetName() << " to arena " << arena_id
               << '\n';
     pokemon->StartMovingToArena(arena);
@@ -81,9 +81,8 @@ void DoBattleCommand(Model& model, int pokemon_id, int rival_id) {
       model.GetRivalPtr(rival_id) != 0) {
     Pokemon* pokemon = model.GetPokemonPtr(pokemon_id);
     Rival* rival = model.GetRivalPtr(rival_id);
-    std::cout << pokemon->GetName() << " is battling " << rival->GetName()
-              << "!\n";
-    pokemon->StartBattle();
+    //std::cout << pokemon->GetName() << " is battling " << rival->GetName() << "!\n";
+    pokemon->ReadyBattle(rival);
   } else {
     std::cout << "Error: Please enter a valid command!\n";
   }
@@ -186,7 +185,7 @@ void CommandHandling(Model& model, View& view, const char command) {
       break;
     }
     case 'q': {
-      model.~Model();  // TODO Probably shouldn't do this
+      model.~Model();
       break;
     }
     default: {

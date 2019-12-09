@@ -1,6 +1,6 @@
 CC=g++ -g -std=c++11
 
-OBJS=main.o Building.o Point2D.o Vector2D.o GameObject.o GameCommand.o PokemonCenter.o Model.o Pokemon.o PokemonGym.o View.o
+OBJS=main.o Building.o Point2D.o Vector2D.o GameObject.o GameCommand.o PokemonCenter.o Pokemon.o PokemonGym.o Rival.o BattleArena.o Model.o View.o
 
 default: PA3
 
@@ -10,34 +10,40 @@ PA3: $(OBJS)
 Vector2D.o: Vector2D.cpp Vector2D.h
 	$(CC) -c Vector2D.cpp -o Vector2D.o 
 	
-Point2D.o: Point2D.cpp Point2D.h Vector2D.h
+Point2D.o: Point2D.cpp Point2D.h
 	$(CC) -c Point2D.cpp -o Point2D.o 
 
 Building.o: Building.cpp Building.h
 	$(CC) -c Building.cpp -o Building.o
 
-GameObject.o: GameObject.cpp GameObject.h Point2D.h Vector2D.h
+GameObject.o: GameObject.cpp GameObject.h
 	$(CC) -c GameObject.cpp -o GameObject.o 
 
-PokemonCenter.o: PokemonCenter.cpp PokemonCenter.h GameObject.h Point2D.h
+PokemonCenter.o: PokemonCenter.cpp PokemonCenter.h
 	$(CC) -c PokemonCenter.cpp -o PokemonCenter.o
 
-Model.o: Model.cpp Model.h GameObject.h Pokemon.h PokemonGym.h PokemonCenter.h View.h
+Model.o: Model.cpp Model.h
 	$(CC) -c Model.cpp -o Model.o 
 
-PokemonGym.o: PokemonGym.cpp PokemonGym.h GameObject.h Point2D.h
+PokemonGym.o: PokemonGym.cpp PokemonGym.h
 	$(CC) -c PokemonGym.cpp -o PokemonGym.o
 
-View.o: View.cpp View.h GameObject.h Point2D.h
+View.o: View.cpp View.h
 	$(CC) -c View.cpp -o View.o 
 
-Pokemon.o: Pokemon.cpp Pokemon.h GameObject.h Point2D.h Vector2D.h PokemonGym.h PokemonCenter.h
+Pokemon.o: Pokemon.cpp Pokemon.h
 	$(CC) -c Pokemon.cpp -o Pokemon.o
 
-GameCommand.o: GameCommand.cpp GameCommand.h Model.h GameObject.h Pokemon.h PokemonGym.h PokemonCenter.h
+Rival.o: Rival.cpp Rival.h
+	$(CC) -c Rival.cpp -o Rival.o
+
+BattleArena.o: BattleArena.cpp BattleArena.h
+	$(CC) -c BattleArena.cpp -o BattleArena.o
+
+GameCommand.o: GameCommand.cpp GameCommand.h
 	$(CC) -c GameCommand.cpp -o GameCommand.o
 
-main.o: main.cpp Building.h Point2D.h Vector2D.h GameCommand.h PokemonCenter.h Model.h Pokemon.h PokemonGym.h GameObject.h View.h
+main.o: main.cpp Building.h Point2D.h Vector2D.h GameCommand.h PokemonCenter.h Model.h Pokemon.h PokemonGym.h GameObject.h View.h Rival.h BattleArena.h
 	$(CC) -c main.cpp
 
 clean: 

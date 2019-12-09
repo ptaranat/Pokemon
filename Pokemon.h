@@ -5,7 +5,6 @@
 
 #include "PokemonCenter.h"
 #include "PokemonGym.h"
-//#include "BattleArena.h"
 #include "Rival.h"
 
 class Pokemon : public GameObject {
@@ -28,11 +27,9 @@ class Pokemon : public GameObject {
  public:
   Pokemon();
   Pokemon(char in_code);
-  Pokemon(std::string in_name, int in_id, char in_code, unsigned int in_speed,
-          Point2D in_loc);
-  Pokemon(std::string in_name, double speed, double hp, double phys_dmg,
-          double magic_dmg, double def, int in_id, char in_code, Point2D in_loc)
-      : GameObject(in_loc, in_id, 'P'){};
+  Pokemon(std::string in_name, double in_speed, double hp,
+                 double phys_dmg, double magic_dmg, double def, int in_id,
+                 char in_code, Point2D in_loc);
   ~Pokemon() { std::cout << "Pokemon destructed.\n"; };
   void StartMoving(Point2D dest);
   void StartMovingToCenter(PokemonCenter* center);
@@ -63,9 +60,9 @@ class Pokemon : public GameObject {
   double physical_damage = 5;
   double magical_damage = 4;
   double defense = 15;  // Parry a percentage of attack received
-  Rival* target;
-  bool is_in_arena;  // true if Pokemon inside area
-  BattleArena* current_arena;
+  Rival* target = nullptr;
+  bool is_in_arena = false;  // true if Pokemon inside area
+  BattleArena* current_arena = nullptr;
 
  private:
   // The speed this object travels, expressed as distance per update time unit.
