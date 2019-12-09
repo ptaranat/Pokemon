@@ -204,14 +204,23 @@ void Pokemon::ReadyBattle(Rival* in_target) {
     pokemon_dollars -= current_arena->GetDollarCost();
     std::cout << display_code << id_num << ": Getting ready for the battle\n";
   } else {
+    if (IsExhausted()) {
+      std::cout << display_code << id_num
+                << ": I am exhuasted so no more battling for me...\n";
+      return;
+    }
     if (is_in_arena == false) {
       std::cout << display_code << id_num
                 << ": I can only fight in a Battle Arena!\n";
       return;
     }
+    if (in_target->IsAlive() == false) {
+      std::cout << in_target->GetName() << " already fainted! Cannot battle.\n";
+      return;
+    }
     if (current_arena->IsAbleToFight(pokemon_dollars, stamina) == false) {
       std::cout << display_code << id_num
-                << ": Not enough stamina and/or money for training.\n";
+                << ": Not enough stamina and/or money for battle.\n";
       return;
     }
     if (current_arena->IsBeaten()) {
@@ -507,7 +516,12 @@ bool Pokemon::Update() {
       return false;
     }
     case BATTLE: {
-      stamina -= current_arena->GetStaminaCost();
+      if (stamina >= current_arena->GetStaminaCost()) {
+        stamina -= current_arena->GetStaminaCost();
+      }
+      else{
+        stamina = 0;
+      }
       StartBattle();
       if (health > 0 && target->GetHealth() <= 0) {
         std::cout << "Congrats Master, you defeated one rival!\n";
