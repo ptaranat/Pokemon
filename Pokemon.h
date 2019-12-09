@@ -27,9 +27,9 @@ class Pokemon : public GameObject {
  public:
   Pokemon();
   Pokemon(char in_code);
-  Pokemon(std::string in_name, double in_speed, double hp,
-                 double phys_dmg, double magic_dmg, double def, int in_id,
-                 char in_code, Point2D in_loc);
+  Pokemon(std::string in_name, double in_speed, double hp, double phys_dmg,
+          double magic_dmg, double def, int in_id, char in_code,
+          Point2D in_loc);
   ~Pokemon() { std::cout << "Pokemon destructed.\n"; };
   void StartMoving(Point2D dest);
   void StartMovingToCenter(PokemonCenter* center);
@@ -45,7 +45,10 @@ class Pokemon : public GameObject {
   std::string GetName() { return this->name; }
   // PA4 Step 1
   bool isAlive() {
-    if (state == FAINTED) return true;
+    if (state == FAINTED)
+      return false;
+    else
+      return true;
   }
   void TakeHit(double phys_dmg, double magic_dmg, double def);
   void ReadyBattle(Rival* in_target);

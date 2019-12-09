@@ -202,6 +202,7 @@ void Pokemon::ReadyBattle(Rival* in_target) {
     target = in_target;
     state = BATTLE;
     pokemon_dollars -= current_arena->GetDollarCost();
+    stamina -= current_arena->GetStaminaCost();
     std::cout << display_code << id_num << ": Getting ready for the battle\n";
   } else {
     if (IsExhausted()) {
@@ -334,6 +335,10 @@ void Pokemon::ShowStatus() {
     case RECOVERING_STAMINA: {
       std::cout << "recovering stamina in Pokemon Center "
                 << current_center->GetId() << '\n';
+      break;
+    }
+    case BATTLE: {
+      std::cout << "in a battle with " << target->GetName() << '\n';
       break;
     }
     case FAINTED: {
@@ -516,12 +521,15 @@ bool Pokemon::Update() {
       return false;
     }
     case BATTLE: {
+      // TODO Check piazza whether Pokemon should lose stamina before or during
+      /*
       if (stamina >= current_arena->GetStaminaCost()) {
         stamina -= current_arena->GetStaminaCost();
       }
       else{
         stamina = 0;
       }
+      */
       StartBattle();
       if (health > 0 && target->GetHealth() <= 0) {
         std::cout << "Congrats Master, you defeated one rival!\n";
@@ -531,6 +539,7 @@ bool Pokemon::Update() {
         return true;
       } else if (health <= 0) {
         std::cout << "No! You lost the battle!\n";
+        health = 0;
         state = FAINTED;
         target->IsAlive();
         return true;

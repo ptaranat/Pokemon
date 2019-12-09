@@ -39,7 +39,8 @@ Model::Model() {
   num_pokemon = 2;
   num_centers = 2;
   num_gyms = 2;
-  num_rivals = 2;
+  num_rivals = 3;
+  num_arenas = 1;
   std::cout << "Model default constructed.\n";
 }
 Model::~Model() {
@@ -104,12 +105,32 @@ bool Model::Update() {
       }
     }
   }
+  int arenas_beaten = 0;
+  for (int i = 0; i < num_arenas; ++i) {
+    if (arena_ptrs[i]->IsBeaten() == true) {
+      arenas_beaten ++;
+      if (arenas_beaten == num_arenas) {
+        std::cout << "GAME OVER: You win! All Battle Arenas beaten!\n";
+        std::exit(EXIT_SUCCESS);
+      }
+    }
+  }
   int tired_pokemon = 0;
   for (int i = 0; i < num_pokemon; ++i) {
     if (pokemon_ptrs[i]->IsExhausted() == true) {
       tired_pokemon++;
       if (tired_pokemon == num_pokemon) {
         std::cout << "GAME OVER: You lose! All of your Pokemon are tired!\n";
+        std::exit(EXIT_SUCCESS);
+      }
+    }
+  }
+  int fainted_pokemon = 0;
+  for (int i = 0; i < num_pokemon; ++i) {
+    if (pokemon_ptrs[i]->isAlive() == false) {
+      fainted_pokemon++;
+      if (fainted_pokemon == num_pokemon) {
+        std::cout << "GAME OVER: You lose! All of your Pokemon fainted!\n";
         std::exit(EXIT_SUCCESS);
       }
     }
