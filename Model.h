@@ -7,22 +7,20 @@
 #include "Rival.h"
 #include "BattleArena.h"
 #include "View.h"
+// PA4 Step 2
+#include "list"
 
 class Model {
  private:
   int time;
-  GameObject* object_ptrs[10];
-  int num_objects;
-  Pokemon* pokemon_ptrs[10];
-  int num_pokemon;
-  PokemonCenter* center_ptrs[10];
-  int num_centers;
-  PokemonGym* gym_ptrs[10];
-  int num_gyms;
-  Rival* rival_ptrs[10];
-  int num_rivals;
-  BattleArena* arena_ptrs[10];
-  int num_arenas;
+  // PA4 replaced with linkedlist
+  std::list<GameObject*> object_ptrs;
+  std::list<GameObject*> active_ptrs;
+  std::list<Pokemon*> pokemon_ptrs;
+  std::list<PokemonCenter*> center_ptrs;
+  std::list<PokemonGym*> gym_ptrs;
+  std::list<Rival*> rival_ptrs;
+  std::list<BattleArena*> arena_ptrs;
 
  public:
   Model();

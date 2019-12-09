@@ -63,7 +63,7 @@ void Pokemon::StartMovingToCenter(PokemonCenter* center) {
     }
     */
     std::cout << display_code << id_num
-              << ": I am exhuasted so I can't move to recover stamina...\n";
+              << ": I am exhausted so I can't move to recover stamina...\n";
     return;
   } else {
     state = MOVING_TO_CENTER;
@@ -142,7 +142,7 @@ void Pokemon::StartTraining(unsigned int num_training_units) {
   } else {
     if (IsExhausted()) {
       std::cout << display_code << id_num
-                << ": I am exhuasted so no more training for me...\n";
+                << ": I am exhausted so no more training for me...\n";
       return;
     }
     if (is_in_gym == false) {
@@ -346,7 +346,7 @@ void Pokemon::ShowStatus() {
       break;
     }
     case EXHAUSTED: {
-      std::cout << '\n';
+      std::cout << "exhausted\n";
       break;
     }
     default: { break; }
@@ -541,6 +541,7 @@ bool Pokemon::Update() {
         std::cout << "No! You lost the battle!\n";
         health = 0;
         state = FAINTED;
+        current_arena->RemoveOnePokemon();
         target->IsAlive();
         return true;
       } else {

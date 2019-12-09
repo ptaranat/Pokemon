@@ -24,7 +24,6 @@ char GameObject::GetState() { return state; }
 // Outputs "(display_code)(id_num) at (location)"
 void GameObject::ShowStatus() {
   std::cout << display_code << id_num << " at " << location;
-  
 }
 
 // Puts the display_code at character pointed to by ptr, then id_num

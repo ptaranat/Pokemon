@@ -44,7 +44,7 @@ class Pokemon : public GameObject {
   bool Update();
   std::string GetName() { return this->name; }
   // PA4 Step 1
-  bool isAlive() {
+  bool IsAlive() {
     if (state == FAINTED)
       return false;
     else
