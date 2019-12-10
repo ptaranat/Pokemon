@@ -5,7 +5,7 @@
 
 class PokemonCenter : public Building {
   enum PokemonCenterStates {
-    STAMINA_POINTS_AVAILABLE    = 0,
+    STAMINA_POINTS_AVAILABLE = 0,
     NO_STAMINA_POINTS_AVAILABLE = 1
   };
 
@@ -35,9 +35,7 @@ class PokemonCenter : public Building {
   // The rest are default.
   PokemonCenter(int in_id, double stamina_cost, unsigned int stamina_cap,
                 Point2D in_loc);
-  ~PokemonCenter() {
-    std::cout << "PokemonCenter destructed.\n";
-  }
+  ~PokemonCenter() { std::cout << "PokemonCenter destructed.\n"; }
   // Returns true if this PokemonCenter contains at least one stamina point.
   // Returns false otherwise.
   bool HasStaminaPoints();

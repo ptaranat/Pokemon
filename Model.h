@@ -1,15 +1,14 @@
 #ifndef MODEL_H
 #define MODEL_H
 
+#include <list>
+#include "BattleArena.h"
+#include "Input_Handling.h"
 #include "Pokemon.h"
 #include "PokemonCenter.h"
 #include "PokemonGym.h"
 #include "Rival.h"
-#include "BattleArena.h"
 #include "View.h"
-// PA4 Step 2
-#include <list>
-#include "Input_Handling.h"
 
 class Model {
  private:
