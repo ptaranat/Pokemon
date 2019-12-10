@@ -17,6 +17,7 @@ class Rival : public GameObject {
   BattleArena* current_arena = nullptr;
 
  public:
+  Rival(BattleArena* arena, Point2D in_loc, int in_id);
   Rival(std::string name, double hp, double phys_dmg,
         double magic_dmg, double def, BattleArena* arena, int in_id, Point2D in_loc);
   ~Rival() { std::cout << "Rival destructed.\n"; };

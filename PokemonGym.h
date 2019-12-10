@@ -20,6 +20,7 @@ class PokemonGym : public Building {
 
  public:
   PokemonGym();
+  PokemonGym(Point2D in_loc, int in_id);
   PokemonGym(unsigned int max_training_units, unsigned int stamina_cost,
              double dollar_cost, unsigned int exp_points_per_unit, int in_id,
              Point2D in_loc);

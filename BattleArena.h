@@ -15,6 +15,7 @@ class BattleArena : public Building {
 
  public:
   BattleArena();
+  BattleArena(Point2D in_loc, int in_id);
   ~BattleArena() { std::cout << "BattleArena destructed.\n"; };
   BattleArena(unsigned int max_rivals, unsigned int stamina_cost,
               double dollar_cost, int in_id, Point2D in_loc);
@@ -27,6 +28,7 @@ class BattleArena : public Building {
   bool IsBeaten();
   void ShowStatus();
   void RemoveOneRival();
+  void AddOneRival();
 };
 
 #endif

@@ -58,32 +58,32 @@ Pokemon* Model::GetPokemonPtr(int id) {
   return 0;
 }
 PokemonCenter* Model::GetPokemonCenterPtr(int id) {
-  for (auto& center: center_ptrs) {
-    if ( center->GetId() == id) {
+  for (auto& center : center_ptrs) {
+    if (center->GetId() == id) {
       return center;
     }
   }
   return 0;
 }
 PokemonGym* Model::GetPokemonGymPtr(int id) {
-  for (auto& gym: gym_ptrs) {
-    if ( gym->GetId() == id) {
+  for (auto& gym : gym_ptrs) {
+    if (gym->GetId() == id) {
       return gym;
     }
   }
   return 0;
 }
 Rival* Model::GetRivalPtr(int id) {
-  for (auto& rival: rival_ptrs) {
-    if ( rival->GetId() == id) {
+  for (auto& rival : rival_ptrs) {
+    if (rival->GetId() == id) {
       return rival;
     }
   }
   return 0;
 }
 BattleArena* Model::GetBattleArenaPtr(int id) {
-  for (auto& arena: arena_ptrs) {
-    if ( arena->GetId() == id) {
+  for (auto& arena : arena_ptrs) {
+    if (arena->GetId() == id) {
       return arena;
     }
   }
@@ -126,9 +126,10 @@ bool Model::Update() {
     if (pokemon->IsAlive() == false) {
       fainted_pokemon++;
     }
-    if (tired_pokemon+fainted_pokemon >= pokemon_ptrs.size()) {
-        std::cout << "GAME OVER: You lose! All of your Pokemon are tired or fainted!\n";
-        std::exit(EXIT_SUCCESS);
+    if (tired_pokemon + fainted_pokemon >= pokemon_ptrs.size()) {
+      std::cout
+          << "GAME OVER: You lose! All of your Pokemon are tired or fainted!\n";
+      std::exit(EXIT_SUCCESS);
     }
   }
   for (auto iter = active_ptrs.begin(); iter != active_ptrs.end(); ++iter) {
@@ -151,5 +152,68 @@ void Model::ShowStatus() {
   std::cout << "Time: " << time << '\n';
   for (auto& obj : object_ptrs) {
     obj->ShowStatus();
+  }
+}
+void Model::NewCommand(char type, int id, Point2D loc) {
+  try {
+    switch (type) {
+      case 'p': {
+        if (GetPokemonPtr(id) != 0) {
+          throw Invalid_Input("Pokemon already exists!");
+        }
+        Pokemon* p = new Pokemon(loc, id);
+        pokemon_ptrs.push_back(p);
+        object_ptrs.push_back(p);
+        active_ptrs.push_back(p);
+        return;
+      }
+      case 'c': {
+        if (GetPokemonCenterPtr(id) != 0) {
+          throw Invalid_Input("Center already exists!");
+        }
+        PokemonCenter* c = new PokemonCenter(loc, id);
+        center_ptrs.push_back(c);
+        object_ptrs.push_back(c);
+        active_ptrs.push_back(c);
+        return;
+      }
+      case 'g': {
+        if (GetPokemonGymPtr(id) != 0) {
+          throw Invalid_Input("Gym already exists!");
+        }
+        PokemonGym* g = new PokemonGym(loc, id);
+        gym_ptrs.push_back(g);
+        object_ptrs.push_back(g);
+        active_ptrs.push_back(g);
+        return;
+      }
+      // ! Not Implemented
+      /*
+      case 'a': {
+        if (GetBattleArenaPtr(id) != 0) {
+          throw Invalid_Input("Arena already exists!");
+        }
+        BattleArena* a = new BattleArena(loc, id);
+        arena_ptrs.push_back(a);
+        return;
+      }
+      */
+      // TODO We cannot create a rival outside an existing arena
+      case 'r': {
+        if (GetRivalPtr(id) != 0) {
+          throw Invalid_Input("Rival already exists!");
+        }
+        BattleArena* arena = GetBattleArenaPtr(1);  // ! THIS IS HARDCODED
+        Rival* r = new Rival(arena, loc, id);
+        rival_ptrs.push_back(r);
+        object_ptrs.push_back(r);
+        active_ptrs.push_back(r);
+        return;
+      }
+      // Should never happen
+      default: { throw Invalid_Input("Valid types are p, c, g, r"); }
+    }
+  } catch (Invalid_Input& except) {
+    std::cout << "Invalid ID - " << except.msg_ptr << std::endl;
   }
 }

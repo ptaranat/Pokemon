@@ -1,4 +1,17 @@
 #include "Rival.h"
+#include <sstream>
+
+// TODO How can I create a Rival without it belonging to an arena??
+Rival::Rival(BattleArena* arena, Point2D in_loc, int in_id) : GameObject(in_loc, in_id, 'R') {
+  // Create a Rival named "Rival ID" where ID=in_id
+  std::ostringstream oss;
+  oss << "Rival " << in_id;
+  name = oss.str();
+  state = ALIVE_RIVAL;
+  is_in_arena = true;
+  current_arena = arena;
+  arena->AddOneRival();
+}
 
 Rival::Rival(std::string in_name, double hp, double phys_dmg, double magic_dmg,
              double def, BattleArena* arena, int in_id, Point2D in_loc)

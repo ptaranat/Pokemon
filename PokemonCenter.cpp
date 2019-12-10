@@ -11,6 +11,12 @@ PokemonCenter::PokemonCenter() {
   state = STAMINA_POINTS_AVAILABLE;
   std::cout << "PokemonCenter default constructed.\n";
 }
+PokemonCenter::PokemonCenter(Point2D in_loc, int in_id) {
+  display_code = 'C';
+  id_num = in_id;
+  location = in_loc;
+  state = STAMINA_POINTS_AVAILABLE;
+}
 // Initializes the member variables to these values:
 // - ID number = in_id
 // - location = in_loc

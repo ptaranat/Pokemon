@@ -3,14 +3,15 @@
 // Public
 
 Pokemon::Pokemon() : GameObject('P') {
-  speed = 5;
   state = STOPPED;
   std::cout << "Pokemon default constructed.\n";
 }
 Pokemon::Pokemon(char in_code) : GameObject(in_code) {
-  speed = 5;
   state = STOPPED;
   display_code = in_code;
+}
+Pokemon::Pokemon(Point2D in_loc, int in_id) : GameObject(in_loc, in_id, 'P') {
+  state = STOPPED;
 }
 Pokemon::Pokemon(std::string in_name, double in_speed, double hp,
                  double phys_dmg, double magic_dmg, double def, int in_id,

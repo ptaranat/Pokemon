@@ -11,6 +11,17 @@ PokemonGym::PokemonGym() {
   experience_points_per_training_unit = 2;
   std::cout << "PokemonGym default constructed.\n";
 }
+PokemonGym::PokemonGym(Point2D in_loc, int in_id) {
+  display_code = 'G';
+  id_num = in_id;
+  location = in_loc;
+  state = NOT_BEATEN;
+  max_number_of_training_units = 10;
+  num_training_units_remaining = max_number_of_training_units;
+  stamina_cost_per_training_unit = 1;
+  dollar_cost_per_training_unit = 1.0;
+  experience_points_per_training_unit = 2;
+}
 PokemonGym::PokemonGym(unsigned int max_training_units,
                        unsigned int stamina_cost, double dollar_cost,
                        unsigned int exp_points_per_unit, int in_id,

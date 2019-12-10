@@ -8,7 +8,8 @@
 #include "BattleArena.h"
 #include "View.h"
 // PA4 Step 2
-#include "list"
+#include <list>
+#include "Input_Handling.h"
 
 class Model {
  private:
@@ -33,5 +34,6 @@ class Model {
   bool Update();
   void Display(View& view);
   void ShowStatus();
+  void NewCommand(char type, int id, Point2D loc);
 };
 #endif

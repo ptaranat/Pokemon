@@ -114,6 +114,18 @@ void CommandHandling(Model& model, View& view, const char command) {
       return;
     }
     switch (command) {
+      case 'n': {
+        char type;
+        int id;
+        double x, y;
+        if (!(std::cin >> type >> id >> x >> y))
+          throw Invalid_Input("Invalid parameters (char, int, double, double");
+        // Check if type is valid
+        if (!((std::string("pcgr").find(type) != std::string::npos)))
+          throw Invalid_Input("Valid types are p, c, g, r");
+        model.NewCommand(type, id, Point2D(x, y));
+        break;
+      }
       case 'm': {
         int id;
         double x, y;
@@ -163,7 +175,8 @@ void CommandHandling(Model& model, View& view, const char command) {
         int id;
         unsigned int stamina_amount;
         if (!(std::cin >> id >> stamina_amount))
-          throw Invalid_Input("Not a valid Pokemon or stamina amount (integer)");
+          throw Invalid_Input(
+              "Not a valid Pokemon or stamina amount (integer)");
         DoRecoverInCenterCommand(model, id, stamina_amount);
         model.Display(view);
         break;
@@ -172,7 +185,8 @@ void CommandHandling(Model& model, View& view, const char command) {
         int id;
         unsigned int unit_amount;
         if (!(std::cin >> id >> unit_amount))
-          throw Invalid_Input("Not a valid Pokemon ID or training amount (integer)");
+          throw Invalid_Input(
+              "Not a valid Pokemon ID or training amount (integer)");
         DoTrainInGymCommand(model, id, unit_amount);
         model.Display(view);
         break;

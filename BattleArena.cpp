@@ -11,6 +11,18 @@ BattleArena::BattleArena() {
   std::cout << "BattleArena default constructed.\n";
 }
 
+BattleArena::BattleArena(Point2D in_loc, int in_id) {
+  display_code = 'A';
+  location = in_loc;
+  id_num = in_id;
+  pokemon_count = 0;
+  max_num_rivals = 3;
+  num_rivals_remaining = max_num_rivals;
+  dollar_cost_per_fight = 4;
+  stamina_cost_per_fight = 3;
+  state = RIVALS_AVAILABLE;
+}
+
 BattleArena::BattleArena(unsigned int max_rivals, unsigned int stamina_cost,
                          double dollar_cost, int in_id, Point2D in_loc) {
   display_code = 'A';
@@ -62,9 +74,16 @@ void BattleArena::ShowStatus() {
   Building::ShowStatus();
   std::cout << "\tStamina cost per fight: " << stamina_cost_per_fight << '\n'
             << "\tPokemon dollar cost per fight: " << dollar_cost_per_fight
-            << '\n' << '\t' << num_rivals_remaining
+            << '\n'
+            << '\t' << num_rivals_remaining
             << " rival(s) are remaining for this arena\n";
 }
-void BattleArena::RemoveOneRival() {
-  num_rivals_remaining -= 1;
+void BattleArena::RemoveOneRival() { num_rivals_remaining -= 1; }
+void BattleArena::AddOneRival() {
+  if (num_rivals_remaining < max_num_rivals) {
+    num_rivals_remaining++;
+  } else {
+    max_num_rivals++;
+    num_rivals_remaining++;
+  }
 }

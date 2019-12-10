@@ -27,6 +27,7 @@ class Pokemon : public GameObject {
  public:
   Pokemon();
   Pokemon(char in_code);
+  Pokemon(Point2D in_loc, int in_id);
   Pokemon(std::string in_name, double in_speed, double hp, double phys_dmg,
           double magic_dmg, double def, int in_id, char in_code,
           Point2D in_loc);
@@ -69,7 +70,7 @@ class Pokemon : public GameObject {
 
  private:
   // The speed this object travels, expressed as distance per update time unit.
-  double speed;
+  double speed = 5;
   bool is_in_gym = false;
   bool is_in_center = false;
   unsigned int stamina = 20;
