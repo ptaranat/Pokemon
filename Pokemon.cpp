@@ -1,4 +1,5 @@
 #include "Pokemon.h"
+#include <sstream>
 
 // Public
 
@@ -11,6 +12,9 @@ Pokemon::Pokemon(char in_code) : GameObject(in_code) {
   display_code = in_code;
 }
 Pokemon::Pokemon(Point2D in_loc, int in_id) : GameObject(in_loc, in_id, 'P') {
+  std::ostringstream oss;
+  oss << "Pokemon " << in_id;
+  name = oss.str();
   state = STOPPED;
 }
 Pokemon::Pokemon(std::string in_name, double in_speed, double hp,
