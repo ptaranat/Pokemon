@@ -40,10 +40,10 @@ Rival.o: Rival.cpp Rival.h
 BattleArena.o: BattleArena.cpp BattleArena.h
 	$(CC) -c BattleArena.cpp -o BattleArena.o
 
-GameCommand.o: GameCommand.cpp GameCommand.h
+GameCommand.o: GameCommand.cpp GameCommand.h Input_Handling.h
 	$(CC) -c GameCommand.cpp -o GameCommand.o
 
-main.o: main.cpp Building.h Point2D.h Vector2D.h GameCommand.h PokemonCenter.h Model.h Pokemon.h PokemonGym.h GameObject.h View.h Rival.h BattleArena.h
+main.o: main.cpp Building.h Point2D.h Vector2D.h GameCommand.h PokemonCenter.h Model.h Pokemon.h PokemonGym.h GameObject.h View.h Rival.h BattleArena.h Input_Handling.h
 	$(CC) -c main.cpp
 
 clean: 
