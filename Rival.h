@@ -7,6 +7,9 @@
 #include "Attack.h"
 #include "BattleArena.h"
 
+// EXTRA CREDIT: Same thing as Pokemon
+// Randomly selects a move from the move_list
+
 class Rival : public GameObject {
   enum RivalStates { ALIVE_RIVAL = 0, FAINTED_RIVAL = 1 };
 

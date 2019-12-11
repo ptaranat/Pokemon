@@ -7,6 +7,11 @@
 #include "PokemonGym.h"
 #include "Rival.h"
 
+// EXTRA CREDIT: Added move select functionality
+// Overloaded TakeHit() that takes in a damage type and double damage value
+// SetMoves(): Sets the move_list of the Pokemon to the Attack vector
+// Updated StartBattle() for attack menu and use hearts
+
 class Pokemon : public GameObject {
   enum PokemonStates {
     STOPPED = 0,
