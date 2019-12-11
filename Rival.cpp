@@ -27,6 +27,20 @@ Rival::Rival(std::string in_name, double hp, double phys_dmg, double magic_dmg,
   current_arena = arena;
 }
 
+void Rival::TakeHit(std::string type, double dmg) {
+  std::cout << GetName() << ": ";
+  if (type == "physical") {
+    std::cout << "Aaagh, no physical pain no gain!\n";
+  } else {
+    std::cout << "Ouch, I don't believe in magic!\n";
+  }
+  double damage = (100.0 - defense) / 100 * dmg;
+  health -= damage;
+  std::cout << "Damage: " << damage << '\n'
+            << "Health: " << health << '\n'
+            << "*******\n";
+}
+
 void Rival::TakeHit(double phys_dmg, double magic_dmg, double def) {
   double attack;
   std::cout << GetName() << ": ";

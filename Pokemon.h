@@ -54,6 +54,13 @@ class Pokemon : public GameObject {
   void TakeHit(double phys_dmg, double magic_dmg, double def);
   void ReadyBattle(Rival* in_target);
   bool StartBattle();
+  // Move_list
+  void SetMoves(std::vector<Attack> attacks) {
+    for (int i = 0; i < attacks.size(); ++i) {
+      move_list.insert({i, attacks[i]});
+    }
+  }
+  void TakeHit(std::string type, double dmg);
 
  protected:
   bool UpdateLocation();
@@ -85,6 +92,8 @@ class Pokemon : public GameObject {
   Point2D destination;
   // The x and y amounts that the object will move on each time unit.
   Vector2D delta;
+  // Movelist
+  std::map<int, Attack> move_list;
 };
 
 double GetRandomAmountOfPokemonDollars();

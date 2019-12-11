@@ -14,7 +14,17 @@ Model::Model() {
   Rival* r2 = new Rival("mmark9", 29, 4, 5.2, 12, a1, 2, Point2D(15, 12));
   Rival* r3 = new Rival("Densmore(aka BigBoss)", 41, 6, 8.2, 18, a1, 3,
                         Point2D(15, 12));
-
+  std::vector<Attack> p1moves;
+  Attack att = Attack("Quick Attack", "physical", 4);
+  p1moves.push_back(att);
+  att = Attack("Thunder Shock", "magical", 4);
+  p1moves.push_back(att);
+  att = Attack("Spark", "magical", 6);
+  p1moves.push_back(att);
+  att = Attack("Slam", "physical", 8);
+  p1moves.push_back(att);
+  p1->SetMoves(p1moves);
+  
   pokemon_ptrs.push_back(p1);
   pokemon_ptrs.push_back(p2);
   center_ptrs.push_back(c1);

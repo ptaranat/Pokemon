@@ -1,5 +1,7 @@
 #include "Pokemon.h"
 #include <sstream>
+#include <iomanip>
+#include <limits>
 
 // Public
 
@@ -254,12 +256,58 @@ void Pokemon::TakeHit(double phys_dmg, double magic_dmg, double def) {
             << "*******\n";
 }
 
+void Pokemon::TakeHit(std::string type, double dmg) {
+  std::cout << GetName() << ": ";
+  if (type == "physical") {
+    std::cout << "Aaagh, no physical pain no gain!\n";
+  } else {
+    std::cout << "Ouch, I don't believe in magic!\n";
+  }
+  double damage = (100.0 - defense) / 100 * dmg;
+  health -= damage;
+  std::cout << "Damage: " << damage << '\n'
+            << "Health: " << health << '\n'
+            << "*******\n";
+}
+
+void PrintMoves(std::map<int, Attack> moves) {
+  std::cout << std::string(40, '-') << '\n';
+    for (int i = 0; i < moves.size(); i+=2) {
+      std::stringstream s1, s2;
+      s1 << '(' << i << ") " << moves[i].name << ": " << moves[i].damage;
+      std::cout << std::left << std::setw(20) << s1.str();
+      s2 << '(' << i+1 << ") " << moves[i+1].name << ": " << moves[i+1].damage;
+      std::cout << std::left << std::setw(20) << s2.str();
+      std::cout << '\n';
+    }
+    std::cout << std::string(40, '-') << '\n';
+}
+
 bool Pokemon::StartBattle() {
+    std::cout << "Health: " << std::string(int(health), '@') << '\n';
+    std::cout << target->GetName() << ": " << std::string(int(target->GetHealth()), '@') << '\n';
   if (health > 0 or target->GetHealth() > 0) {
+    if (!(move_list.empty())) {
+    PrintMoves(move_list);
+    std::cout << "Choose an attack! ";
+    int choice;
+    std::cin >> choice;
+    while (std::cin.fail()) {
+      std::cin.clear();
+      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+      std::cout << "Not a number! Try again: ";
+      std::cin >> choice;
+    }
+    std::cout << name << " used " << move_list[choice].name << "!\n*******\n";
+    target->TakeHit(move_list[choice].type, move_list[choice].damage);
+    return false;
+    }
+    else {
     // Rival hits first
     TakeHit(target->GetPhysDmg(), target->GetMagicDmg(), defense);
     target->TakeHit(physical_damage, magical_damage, target->GetDefense());
     return false;
+    }
   } else if (health <= 0) {
     return true;  // Lost to rival
   } else {

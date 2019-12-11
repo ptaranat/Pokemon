@@ -1,7 +1,10 @@
 #ifndef RIVAL_H
 #define RIVAL_H
 
+#include <map>
+#include <vector>
 #include <string>
+#include "Attack.h"
 #include "BattleArena.h"
 
 class Rival : public GameObject {
@@ -20,6 +23,7 @@ class Rival : public GameObject {
   Rival(std::string name, double hp, double phys_dmg, double magic_dmg,
         double def, BattleArena* arena, int in_id, Point2D in_loc);
   ~Rival() { std::cout << "Rival destructed.\n"; };
+  void TakeHit(std::string type, double dmg);
   void TakeHit(double phys_dmg, double magic_dmg, double def);
   double GetPhysDmg() { return physical_damage; }
   double GetMagicDmg() { return magical_damage; }
