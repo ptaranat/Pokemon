@@ -3,17 +3,11 @@
 Model::Model() {
   time = 0;
   Pokemon* p1 = new Pokemon("Pikachu", 2, 23, 3, 6, 12, 1, 'P', Point2D(5, 1));
-  Pokemon* p2 =
-      new Pokemon("Bulbasaur", 1, 26, 4, 3.7, 5, 2, 'P', Point2D(10, 1));
   PokemonCenter* c1 = new PokemonCenter(1, 1, 100, Point2D(1, 20));
-  PokemonCenter* c2 = new PokemonCenter(2, 2, 200, Point2D(10, 20));
   PokemonGym* g1 = new PokemonGym(10, 1, 2, 3, 1, Point2D(0, 0));
-  PokemonGym* g2 = new PokemonGym(20, 5, 7.5, 8, 2, Point2D(5, 5));
   BattleArena* a1 = new BattleArena(3, 3, 2.5, 1, Point2D(15, 12));
   Rival* r1 = new Rival("burhack", 16, 3, 7.2, 20, a1, 1, Point2D(15, 12));
-  Rival* r2 = new Rival("mmark9", 29, 4, 5.2, 12, a1, 2, Point2D(15, 12));
-  Rival* r3 = new Rival("Densmore(aka BigBoss)", 41, 6, 8.2, 18, a1, 3,
-                        Point2D(15, 12));
+
   std::vector<Attack> p1moves;
   Attack att = Attack("Quick Attack", "physical", 4);
   p1moves.push_back(att);
@@ -37,26 +31,16 @@ Model::Model() {
   r1->SetMoves(r1moves);
   
   pokemon_ptrs.push_back(p1);
-  pokemon_ptrs.push_back(p2);
   center_ptrs.push_back(c1);
-  center_ptrs.push_back(c2);
   gym_ptrs.push_back(g1);
-  gym_ptrs.push_back(g2);
   arena_ptrs.push_back(a1);
   rival_ptrs.push_back(r1);
-  rival_ptrs.push_back(r2);
-  rival_ptrs.push_back(r3);
 
   object_ptrs.push_back(p1);
-  object_ptrs.push_back(p2);
   object_ptrs.push_back(c1);
-  object_ptrs.push_back(c2);
   object_ptrs.push_back(g1);
-  object_ptrs.push_back(g2);
   object_ptrs.push_back(a1);
   object_ptrs.push_back(r1);
-  object_ptrs.push_back(r2);
-  object_ptrs.push_back(r3);
 
   // Use the copy constructor for list
   std::list<GameObject*> temp_list(object_ptrs);

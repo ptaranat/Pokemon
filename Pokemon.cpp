@@ -319,7 +319,7 @@ bool Pokemon::StartBattle() {
     std::cout << "Choose an attack! ";
     int choice;
     std::cin >> choice;
-    while (std::cin.fail()) {
+    while (std::cin.fail() || choice >= move_list.size()) {
       std::cin.clear();
       std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
       std::cout << "Not a number! Try again: ";
