@@ -2,6 +2,7 @@
 Panat Taranat ptaranat@bu.edu  
 pa4-ptaranat created by GitHub Classroom  
 
+Check out the `attack` branch for these additions  
 EXTRA CREDIT: 
 - Improve battle function (10 pts)
 - Lets you select moves, Rival randomly selects moves
