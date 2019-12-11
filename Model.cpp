@@ -24,6 +24,17 @@ Model::Model() {
   att = Attack("Slam", "physical", 8);
   p1moves.push_back(att);
   p1->SetMoves(p1moves);
+
+  std::vector<Attack> r1moves;
+  att = Attack("Homework", "physical", 2);
+  r1moves.push_back(att);
+  att = Attack("GPA", "magical", 4);
+  r1moves.push_back(att);
+  att = Attack("Debug Lab", "magical", 6);
+  r1moves.push_back(att);
+  att = Attack("Exam", "physical", 8);
+  r1moves.push_back(att);
+  r1->SetMoves(r1moves);
   
   pokemon_ptrs.push_back(p1);
   pokemon_ptrs.push_back(p2);

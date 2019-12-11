@@ -39,10 +39,15 @@ class Rival : public GameObject {
       return false;
   }
   bool ShouldBeVisible();
+  void SetMoves(std::vector<Attack> attacks) {
+    for (int i = 0; i < attacks.size(); ++i) {
+      move_list.insert({i, attacks[i]});
+    }
+  }
+  std::map<int, Attack> move_list;
 
  private:
   double speed;
-
   std::string name;
 };
 

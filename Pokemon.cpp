@@ -251,8 +251,15 @@ void Pokemon::TakeHit(double phys_dmg, double magic_dmg, double def) {
   }
   double damage = (100.0 - defense) / 100 * attack;
   health -= damage;
+  std::string hearts;
+  if (health > 0) {
+    hearts = std::string(int(health), '@');
+  } else {
+    health = 0;
+    hearts = " ";
+  }
   std::cout << "Damage: " << damage << '\n'
-            << "Health: " << health << '\n'
+            << "Health: " << hearts << '\n'
             << "*******\n";
 }
 
@@ -265,8 +272,15 @@ void Pokemon::TakeHit(std::string type, double dmg) {
   }
   double damage = (100.0 - defense) / 100 * dmg;
   health -= damage;
+  std::string hearts;
+  if (health > 0) {
+    hearts = std::string(int(health), '@');
+  } else {
+    health = 0;
+    hearts = " ";
+  }
   std::cout << "Damage: " << damage << '\n'
-            << "Health: " << health << '\n'
+            << "Health: " << hearts << '\n'
             << "*******\n";
 }
 
@@ -284,8 +298,21 @@ void PrintMoves(std::map<int, Attack> moves) {
 }
 
 bool Pokemon::StartBattle() {
-    std::cout << "Health: " << std::string(int(health), '@') << '\n';
+    std::string hearts;
+      if (health > 0) {
+      hearts = std::string(int(health), '@');
+    } else {
+      health = 0;
+      hearts = " ";
+    }
+    std::cout << name << ": " << hearts << '\n';
+    if (target->GetHealth() > 0) {
+      hearts = std::string(int(target->GetHealth()), '@');
+    } else {
+      hearts = " ";
+    }
     std::cout << target->GetName() << ": " << std::string(int(target->GetHealth()), '@') << '\n';
+    // TODO Implement speed to choose who goes first
   if (health > 0 or target->GetHealth() > 0) {
     if (!(move_list.empty())) {
     PrintMoves(move_list);
@@ -300,6 +327,17 @@ bool Pokemon::StartBattle() {
     }
     std::cout << name << " used " << move_list[choice].name << "!\n*******\n";
     target->TakeHit(move_list[choice].type, move_list[choice].damage);
+
+    // Randomly pick their attack
+    if (!(target->move_list.empty())) {
+      int random = rand() % target->move_list.size();
+      Attack att = target->move_list[random];
+      std::cout << target->GetName() << " used " << att.name << "!\n*******\n";
+      TakeHit(att.type, att.damage);
+    }
+    else {
+      TakeHit(target->GetPhysDmg(), target->GetMagicDmg(), defense);
+    }
     return false;
     }
     else {

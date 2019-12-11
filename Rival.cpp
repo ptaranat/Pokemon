@@ -36,8 +36,15 @@ void Rival::TakeHit(std::string type, double dmg) {
   }
   double damage = (100.0 - defense) / 100 * dmg;
   health -= damage;
+  std::string hearts;
+  if (health > 0) {
+    hearts = std::string(int(health), '@');
+  } else {
+    health = 0;
+    hearts = " ";
+  }
   std::cout << "Damage: " << damage << '\n'
-            << "Health: " << health << '\n'
+            << "Health: " << std::string(int(health), '@') << '\n'
             << "*******\n";
 }
 
@@ -53,8 +60,15 @@ void Rival::TakeHit(double phys_dmg, double magic_dmg, double def) {
   }
   double damage = (100.0 - defense) / 100 * attack;
   health -= damage;
+  std::string hearts;
+  if (health > 0) {
+    hearts = std::string(int(health), '@');
+  } else {
+    health = 0;
+    hearts = " ";
+  }
   std::cout << "Damage: " << damage << '\n'
-            << "Health: " << health << '\n'
+            << "Health: " << hearts << '\n'
             << "*******\n";
 }
 bool Rival::ShouldBeVisible() {
