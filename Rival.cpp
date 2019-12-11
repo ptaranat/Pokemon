@@ -14,10 +14,11 @@ Rival::Rival(BattleArena* arena, Point2D in_loc, int in_id)
   arena->AddOneRival();
 }
 
-Rival::Rival(std::string in_name, double hp, double phys_dmg, double magic_dmg,
+Rival::Rival(std::string in_name, double in_speed, double hp, double phys_dmg, double magic_dmg,
              double def, BattleArena* arena, int in_id, Point2D in_loc)
     : GameObject(in_loc, in_id, 'R') {
   name = in_name;
+  speed = in_speed;
   health = hp;
   physical_damage = phys_dmg;
   magical_damage = magic_dmg;

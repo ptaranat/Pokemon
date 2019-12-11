@@ -66,6 +66,7 @@ class Pokemon : public GameObject {
     }
   }
   void TakeHit(std::string type, double dmg);
+  void PrintHearts();
 
  protected:
   bool UpdateLocation();
@@ -79,6 +80,8 @@ class Pokemon : public GameObject {
   Rival* target = nullptr;
   bool is_in_arena = false;  // true if Pokemon inside area
   BattleArena* current_arena = nullptr;
+  // Attack Select
+  void AttackSelect();
 
  private:
   // The speed this object travels, expressed as distance per update time unit.

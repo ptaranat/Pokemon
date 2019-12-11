@@ -6,7 +6,8 @@ Model::Model() {
   PokemonCenter* c1 = new PokemonCenter(1, 1, 100, Point2D(1, 20));
   PokemonGym* g1 = new PokemonGym(10, 1, 2, 3, 1, Point2D(0, 0));
   BattleArena* a1 = new BattleArena(3, 3, 2.5, 1, Point2D(15, 12));
-  Rival* r1 = new Rival("burhack", 16, 3, 7.2, 20, a1, 1, Point2D(15, 12));
+  Rival* r1 = new Rival("burhack", 16, 15, 3, 7.2, 20, a1, 1, Point2D(15, 12));
+  Rival* r2 = new Rival("Volcarona", 20, 3, 3, 6, 5, a1, 2, Point2D(12,12));
 
   std::vector<Attack> p1moves;
   Attack att = Attack("Quick Attack", "physical", 4);
@@ -35,6 +36,7 @@ Model::Model() {
   gym_ptrs.push_back(g1);
   arena_ptrs.push_back(a1);
   rival_ptrs.push_back(r1);
+  rival_ptrs.push_back(r2);
 
   object_ptrs.push_back(p1);
   object_ptrs.push_back(c1);

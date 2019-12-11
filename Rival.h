@@ -2,8 +2,9 @@
 #define RIVAL_H
 
 #include <map>
-#include <vector>
 #include <string>
+#include <vector>
+
 #include "Attack.h"
 #include "BattleArena.h"
 
@@ -23,7 +24,7 @@ class Rival : public GameObject {
 
  public:
   Rival(BattleArena* arena, Point2D in_loc, int in_id);
-  Rival(std::string name, double hp, double phys_dmg, double magic_dmg,
+  Rival(std::string name, double in_speed, double hp, double phys_dmg, double magic_dmg,
         double def, BattleArena* arena, int in_id, Point2D in_loc);
   ~Rival() { std::cout << "Rival destructed.\n"; };
   void TakeHit(std::string type, double dmg);
@@ -33,6 +34,7 @@ class Rival : public GameObject {
   double GetDefense() { return defense; }
   double GetHealth() { return health; }
   std::string GetName() { return this->name; }
+  double GetSpeed() { return speed; }
   bool Update();
   void ShowStatus();
   bool IsAlive() {
