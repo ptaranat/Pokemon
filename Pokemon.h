@@ -1,8 +1,6 @@
 #ifndef POKEMON_H
 #define POKEMON_H
 
-#include <string>
-
 #include "PokemonCenter.h"
 #include "PokemonGym.h"
 #include "Rival.h"
@@ -54,6 +52,7 @@ class Pokemon : public GameObject {
   void TakeHit(double phys_dmg, double magic_dmg, double def);
   void ReadyBattle(Rival* in_target);
   bool StartBattle();
+  void Save(std::ofstream& file);
 
  protected:
   bool UpdateLocation();

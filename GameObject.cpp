@@ -32,3 +32,11 @@ void GameObject::DrawSelf(char* ptr) {
   ptr[1] = (char)(id_num + '0'); // Needs to be ascii
   //std::cout << ptr[0] << ptr[1];
 }
+
+void GameObject::Save(std::ofstream& file) {
+  std::stringstream s;
+  std::string x = std::to_string(location.x);
+  std::string y = std::to_string(location.y);
+  s << x << ' ' << y;
+  file << s.str();
+}

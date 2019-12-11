@@ -208,6 +208,16 @@ void CommandHandling(Model& model, View& view, const char command) {
         DoRunCommand(model, view);
         break;
       }
+      case 'S': {
+        std::string filename;
+        std::cin >> filename;
+        std::ofstream file;
+        file.open(filename);
+        model.Save(file);
+        std::cout << "Saving game...\n";
+        file.close();
+        break;
+      }
       case 'q': {
         model.~Model();
         break;

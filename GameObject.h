@@ -2,6 +2,9 @@
 #define GAMEOBJECT_H
 
 #include "Point2D.h"
+#include <string>
+#include <fstream>
+#include <sstream>
 
 class GameObject {
  protected:
@@ -16,12 +19,15 @@ class GameObject {
   virtual ~GameObject() { std::cout << "GameObject destructed.\n"; };
   Point2D GetLocation();
   int GetId();
-  char GetCode();
+  virtual char GetCode() {
+    return display_code;
+  };
   char GetState();
   virtual bool Update() = 0;
   virtual void ShowStatus();
   virtual bool ShouldBeVisible() = 0;
   void DrawSelf(char* ptr);  // Added by View
+  virtual void Save(std::ofstream& file);
 };
 
 #endif

@@ -217,3 +217,15 @@ void Model::NewCommand(char type, int id, Point2D loc) {
     std::cout << "Invalid ID - " << except.msg_ptr << std::endl;
   }
 }
+
+void Model::Save(std::ofstream& file) {
+  std::stringstream ss;
+  ss << time << '\n';
+  ss << active_ptrs.size() << '\n';
+  for (auto iter : active_ptrs) {
+    std::string s = std::to_string(iter->GetCode()) + std::to_string(iter->GetId());
+    ss << s << '\n';
+    iter->Save(file);
+  }
+  file << ss.str();
+}

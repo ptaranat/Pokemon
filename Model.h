@@ -34,5 +34,6 @@ class Model {
   void Display(View& view);
   void ShowStatus();
   void NewCommand(char type, int id, Point2D loc);
+  void Save(std::ofstream& file);
 };
 #endif

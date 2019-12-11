@@ -1,5 +1,4 @@
 #include "Pokemon.h"
-#include <sstream>
 
 // Public
 
@@ -582,6 +581,45 @@ void Pokemon::SetupDestination(Point2D dest) {
   if (GetDistanceBetween(destination, location) == 0) {
     delta = Vector2D();
   }
+}
+
+void Pokemon::Save(std::ofstream& file) {
+  Stop();
+  GameObject::Save(file);
+  std::stringstream ss;
+  ss << name << ' ' << std::to_string(speed) << ' ' << state << ' '
+     << std::to_string(health) << ' ' << std::to_string(physical_damage) << ' '
+     << std::to_string(magical_damage) << ' ' << std::to_string(defense) << ' '
+     << std::to_string(stamina) << ' ' << std::to_string(experience_points)
+     << std::to_string(pokemon_dollars) << '\n';
+  file << ss.str();
+  if (target != 0) {
+    ss << target->GetId() << '\n';
+  } else {
+    std::string s = "-1\n";
+    ss << s;
+  }
+  std::string s = std::to_string(is_in_arena);
+  ss << s << '\n';
+  if (current_arena != 0) {
+    ss << target->GetId() << '\n';
+  } else {
+    std::string s = "-1\n";
+    ss << s;
+  }
+  if (current_center != 0) {
+    ss << target->GetId() << '\n';
+  } else {
+    std::string s = "-1\n";
+    ss << s;
+  }
+  if (current_gym != 0) {
+    ss << target->GetId() << '\n';
+  } else {
+    std::string s = "-1\n";
+    ss << s;
+  }
+  file << ss.str();
 }
 
 // Non-members
