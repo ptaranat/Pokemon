@@ -11,6 +11,7 @@
 // Overloaded TakeHit() that takes in a damage type and double damage value
 // SetMoves(): Sets the move_list of the Pokemon to the Attack vector
 // Updated StartBattle() for attack menu and use hearts
+// Implement speed check to see who goes first
 
 class Pokemon : public GameObject {
   enum PokemonStates {

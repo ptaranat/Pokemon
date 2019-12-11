@@ -334,7 +334,6 @@ void Pokemon::PrintHearts() {
 
 bool Pokemon::StartBattle() {
   PrintHearts();
-  // TODO Implement speed to choose who goes first
   if (health > 0 or target->GetHealth() > 0) {
     if (speed > target->GetSpeed()) {
       if (!(move_list.empty())) {
