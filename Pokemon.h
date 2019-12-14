@@ -7,6 +7,12 @@
 #include "PokemonGym.h"
 #include "Rival.h"
 
+// EXTRA CREDIT: Added move select functionality
+// Overloaded TakeHit() that takes in a damage type and double damage value
+// SetMoves(): Sets the move_list of the Pokemon to the Attack vector
+// Updated StartBattle() for attack menu and use hearts
+// Implement speed check to see who goes first
+
 class Pokemon : public GameObject {
   enum PokemonStates {
     STOPPED = 0,
@@ -54,6 +60,14 @@ class Pokemon : public GameObject {
   void TakeHit(double phys_dmg, double magic_dmg, double def);
   void ReadyBattle(Rival* in_target);
   bool StartBattle();
+  // Move_list
+  void SetMoves(std::vector<Attack> attacks) {
+    for (int i = 0; i < attacks.size(); ++i) {
+      move_list.insert({i, attacks[i]});
+    }
+  }
+  void TakeHit(std::string type, double dmg);
+  void PrintHearts();
 
  protected:
   bool UpdateLocation();
@@ -67,6 +81,8 @@ class Pokemon : public GameObject {
   Rival* target = nullptr;
   bool is_in_arena = false;  // true if Pokemon inside area
   BattleArena* current_arena = nullptr;
+  // Attack Select
+  void AttackSelect();
 
  private:
   // The speed this object travels, expressed as distance per update time unit.
@@ -85,6 +101,8 @@ class Pokemon : public GameObject {
   Point2D destination;
   // The x and y amounts that the object will move on each time unit.
   Vector2D delta;
+  // Movelist
+  std::map<int, Attack> move_list;
 };
 
 double GetRandomAmountOfPokemonDollars();

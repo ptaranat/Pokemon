@@ -14,10 +14,11 @@ Rival::Rival(BattleArena* arena, Point2D in_loc, int in_id)
   arena->AddOneRival();
 }
 
-Rival::Rival(std::string in_name, double hp, double phys_dmg, double magic_dmg,
+Rival::Rival(std::string in_name, double in_speed, double hp, double phys_dmg, double magic_dmg,
              double def, BattleArena* arena, int in_id, Point2D in_loc)
     : GameObject(in_loc, in_id, 'R') {
   name = in_name;
+  speed = in_speed;
   health = hp;
   physical_damage = phys_dmg;
   magical_damage = magic_dmg;
@@ -25,6 +26,27 @@ Rival::Rival(std::string in_name, double hp, double phys_dmg, double magic_dmg,
   state = ALIVE_RIVAL;
   is_in_arena = true;
   current_arena = arena;
+}
+
+void Rival::TakeHit(std::string type, double dmg) {
+  std::cout << GetName() << ": ";
+  if (type == "physical") {
+    std::cout << "Aaagh, no physical pain no gain!\n";
+  } else {
+    std::cout << "Ouch, I don't believe in magic!\n";
+  }
+  double damage = (100.0 - defense) / 100 * dmg;
+  health -= damage;
+  std::string hearts;
+  if (health > 0) {
+    hearts = std::string(int(health), '@');
+  } else {
+    health = 0;
+    hearts = " ";
+  }
+  std::cout << "Damage: " << damage << '\n'
+            << "Health: " << std::string(int(health), '@') << '\n'
+            << "*******\n";
 }
 
 void Rival::TakeHit(double phys_dmg, double magic_dmg, double def) {
@@ -39,8 +61,15 @@ void Rival::TakeHit(double phys_dmg, double magic_dmg, double def) {
   }
   double damage = (100.0 - defense) / 100 * attack;
   health -= damage;
+  std::string hearts;
+  if (health > 0) {
+    hearts = std::string(int(health), '@');
+  } else {
+    health = 0;
+    hearts = " ";
+  }
   std::cout << "Damage: " << damage << '\n'
-            << "Health: " << health << '\n'
+            << "Health: " << hearts << '\n'
             << "*******\n";
 }
 bool Rival::ShouldBeVisible() {

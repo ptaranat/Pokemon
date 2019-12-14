@@ -1,4 +1,7 @@
 #include "Pokemon.h"
+
+#include <iomanip>
+#include <limits>
 #include <sstream>
 
 // Public
@@ -249,17 +252,134 @@ void Pokemon::TakeHit(double phys_dmg, double magic_dmg, double def) {
   }
   double damage = (100.0 - defense) / 100 * attack;
   health -= damage;
+  std::string hearts;
+  if (health > 0) {
+    hearts = std::string(int(health), '@');
+  } else {
+    health = 0;
+    hearts = " ";
+  }
   std::cout << "Damage: " << damage << '\n'
-            << "Health: " << health << '\n'
+            << "Health: " << hearts << '\n'
             << "*******\n";
 }
 
+void Pokemon::TakeHit(std::string type, double dmg) {
+  std::cout << GetName() << ": ";
+  if (type == "physical") {
+    std::cout << "Aaagh, no physical pain no gain!\n";
+  } else {
+    std::cout << "Ouch, I don't believe in magic!\n";
+  }
+  double damage = (100.0 - defense) / 100 * dmg;
+  health -= damage;
+  std::string hearts;
+  if (health > 0) {
+    hearts = std::string(int(health), '@');
+  } else {
+    health = 0;
+    hearts = " ";
+  }
+  std::cout << "Damage: " << damage << '\n'
+            << "Health: " << hearts << '\n'
+            << "*******\n";
+}
+
+void PrintMoves(std::map<int, Attack> moves) {
+  std::cout << std::string(40, '-') << '\n';
+  for (int i = 0; i < moves.size(); i += 2) {
+    std::stringstream s1, s2;
+    s1 << '(' << i << ") " << moves[i].name << ": " << moves[i].damage;
+    std::cout << std::left << std::setw(20) << s1.str();
+    s2 << '(' << i + 1 << ") " << moves[i + 1].name << ": "
+       << moves[i + 1].damage;
+    std::cout << std::left << std::setw(20) << s2.str();
+    std::cout << '\n';
+  }
+  std::cout << std::string(40, '-') << '\n';
+}
+
+void Pokemon::AttackSelect() {
+  PrintMoves(move_list);
+  std::cout << "Choose an attack! ";
+  int choice;
+  std::cin >> choice;
+  while (std::cin.fail() || choice >= move_list.size()) {
+    std::cin.clear();
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::cout << "Not a number! Try again: ";
+    std::cin >> choice;
+  }
+  std::cout << name << " used " << move_list[choice].name << "!\n*******\n";
+  target->TakeHit(move_list[choice].type, move_list[choice].damage);
+}
+
+void Pokemon::PrintHearts() {
+    std::string hearts;
+  if (health > 0) {
+    hearts = std::string(int(health), '@');
+  } else {
+    health = 0;
+    hearts = " ";
+  }
+  std::cout << name << ": " << hearts << '\n';
+  if (target->GetHealth() > 0) {
+    hearts = std::string(int(target->GetHealth()), '@');
+  } else {
+    hearts = " ";
+  }
+  std::cout << target->GetName() << ": "
+            << std::string(int(target->GetHealth()), '@') << "\n*******\n";
+}
+
 bool Pokemon::StartBattle() {
+  PrintHearts();
   if (health > 0 or target->GetHealth() > 0) {
-    // Rival hits first
-    TakeHit(target->GetPhysDmg(), target->GetMagicDmg(), defense);
-    target->TakeHit(physical_damage, magical_damage, target->GetDefense());
-    return false;
+    if (speed > target->GetSpeed()) {
+      if (!(move_list.empty())) {
+        // Go first
+        AttackSelect();
+        // If target has moves
+        if (!(target->move_list.empty())) {
+          int random = rand() % target->move_list.size();
+          Attack att = target->move_list[random];
+          std::cout << target->GetName() << " used " << att.name
+                    << "!\n*******\n";
+          TakeHit(att.type, att.damage);
+          return false;
+        } else {
+          // Default behavior for Target
+          TakeHit(target->GetPhysDmg(), target->GetMagicDmg(), defense);
+          return false;
+        }
+      }
+      // No moves
+      else {
+        // Rival hits first
+        TakeHit(target->GetPhysDmg(), target->GetMagicDmg(), defense);
+        target->TakeHit(physical_damage, magical_damage, target->GetDefense());
+        return false;
+      }
+    }
+    // Target was faster
+    else {
+      // Target goes first, has moves
+      if (!(target->move_list.empty())) {
+        int random = rand() % target->move_list.size();
+        Attack att = target->move_list[random];
+        std::cout << target->GetName() << " used " << att.name
+                  << "!\n*******\n";
+        // Your turn
+        AttackSelect();
+        return false;
+      }
+      // Target no moves
+      else {
+        TakeHit(target->GetPhysDmg(), target->GetMagicDmg(), defense);
+        AttackSelect();
+        return false;
+      }
+    }
   } else if (health <= 0) {
     return true;  // Lost to rival
   } else {
@@ -354,7 +474,9 @@ void Pokemon::ShowStatus() {
       std::cout << "exhausted\n";
       break;
     }
-    default: { break; }
+    default: {
+      break;
+    }
   }
   std::cout << "\tStamina: " << stamina << '\n'
             << "\tPokemon Dollars: " << pokemon_dollars << '\n'
@@ -553,7 +675,9 @@ bool Pokemon::Update() {
         return false;
       }
     }
-    default: { return false; }
+    default: {
+      return false;
+    }
   }
 }
 
