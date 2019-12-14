@@ -25,7 +25,8 @@ q       quit
 ```
 
 Check out the `attack` branch for these additions  
-- Improve battle function
+- Improved battle function
 - Lets you select moves, Rival randomly selects moves
+- The faster Pokemon goes first
 - Display health as @ symbols instead of numbers
 - Can add as many Rivals and update the Arena's num_rivals automatically
